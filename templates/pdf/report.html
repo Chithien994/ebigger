@@ -1,0 +1,287 @@
+{% load static %}
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>DwellTimer</title>
+    <style type="text/css">
+        @page {
+            size: A4 portrait;
+            margin: 1cm;
+            @frame footer_frame {           /* Another static Frame */
+                -pdf-frame-content: footer_content;
+                left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+            }
+        }
+
+        @font-face {
+            font-family: Arial;
+            src: url(fonts/arial.ttf);
+        }
+
+        @font-face {
+            font-family: Arial;
+            src: url(fonts/ArialBold.ttf);
+            font-weight: bold;
+        }
+
+        body {
+            font-family: Arial;
+        }
+
+        h1 {
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+
+        div#header {
+            overflow: hidden;
+        }
+
+        .logo {
+            width: 50%;
+            float: left;
+        }
+
+        .logo h1 {
+            margin: 0;
+        }
+
+        .logo h1 sup {
+            font-size: 14px;
+        }
+
+        .user-profile {
+            margin-top: 40px;
+            overflow: hidden;
+        }
+
+
+
+        .date-time {
+            float: right;
+            width: 50%;
+            text-align: right;
+            margin-top: 7px;
+        }
+
+        .tracking-result {
+            margin-top: 40px;
+            overflow: auto;
+        }
+
+        .report-wrapper {
+            margin-top: 40px;
+        }
+
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 5px;
+            background-color: #fff;
+            border-spacing: 0;
+        }
+
+        .table th,
+        .table td {
+            padding: 5px;
+            vertical-align: top;
+            border: 1px solid #000;
+            text-align: center;
+        }
+
+
+        .table thead th {
+            vertical-align: bottom;
+            border-left: 1px solid #000;
+            border-bottom: 1px solid #000;
+        }
+
+        .table .table {
+            background-color: #fff;
+        }
+
+        .report-summary {
+            margin-top: 40px;
+        }
+
+        .report-row {
+            margin-bottom: 40px;
+        }
+
+        .full-width {
+            width: 100%
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div id="footer_content">{{ tracking.transaction_id }} - Page <pdf:pagenumber>
+                of <pdf:pagecount>
+        </div>
+        <table class="full-width">
+            <tr id="header">
+                <td width="480px" class="logo" style="text-align:center">
+                    <img width="380px" src="{{SITE_URL }}{% static "assets/images/company_logo.png" %}" alt="">
+
+                </td>
+                <td class="date-time">
+
+                    <p>Visit us at
+                        <a href="https://www.dwelltimer.com">www.dwelltimer.com</a>
+                    </p>
+                    <p>Contact
+                        <a href="mailto:info@dwelltimer.com">info@dwelltimer.com</a> for any questions about the report</p>
+                    {% now "jS F Y H:i" %}
+
+                </td>
+            </tr>
+        </table>
+        <table class="user-profile full-width">
+            <thead>
+                <tr>
+                    <td width="150px">&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </thead>
+            <tr class="form-control">
+                <td style="font-weight: bold">Name</td>
+                <td class="form-value">{{ name }}</td>
+            </tr>
+            <tr class="form-control">
+                <td style="font-weight: bold">Company Name</td>
+                <td>{{ company_name}}</td>
+            </tr class="form-control">
+            <tr class="form-control">
+                <td style="font-weight: bold">Address</td>
+                <td class="form-value">{{ address }}</td>
+            </tr>
+            <tr class="form-control">
+                <td style="font-weight: bold">City, State, ZIP</td>
+                <td class="form-value">
+                    <span>{{ city }}</span>
+                    <span>{{ state }}</span>
+                    <span>{{ zip_code }}</span>
+                </td>
+            </tr>
+        </table>
+        <div class="tracking-result">
+            <table class="full-width">
+                <thead>
+                    <tr>
+                        <td width="140">&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td width="300">&nbsp;</td>
+                    </tr>
+                </thead>
+                <tr>
+                    <td colspan="2">
+                        <h2>RESULTS OF DWELL TRACKING</h2>
+                    </td>
+                </tr>
+                <tr class="form-control">
+                    <td style="font-weight: bold">Device Phone #</td>
+                    <td class="form-value">{{ phone_number }}</td>
+                    <td style="font-weight: bold">Location Information</td>
+                </tr>
+                <tr class="form-control">
+                    <td style="font-weight: bold">Transaction ID</td>
+                    <td>{{ tracking.transaction_id }}</td>
+                    <td class="information-text">{{ tracking.location_info_1 }}</td>
+                </tr>
+                <tr class="form-control">
+                    <td style="font-weight: bold">BOL Reference</td>
+                    <td class="form-value">{{ tracking.bol_reference }}</td>
+                    <td class="information-text">{{ tracking.location_info_2 }}</td>
+                </tr>
+            </table>
+
+
+        </div>
+        <div class="report-wrapper">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="40px">TID</th>
+                        <th width="260px">DATE & TIME</th>
+                        <th>GPS PING DATA</th>
+                        <th width="160px">ELAPSED TIME</th>
+                        <th width="100px">OVERAGE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ping in pings %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ ping.date_time|date:"D d M Y h:m" }}</td>
+                        <td>{{ ping.ping_data }}</td>
+                        <td>{{ ping.elapsed_time }}</td>
+                        <td>{{ ping.overage }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table class="report-summary full-wdith">
+                <thead>
+                    <tr>
+                        <td width="800px">&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </thead>
+                <tr class="report-row">
+                    <td style="font-weight: bold">TOTAL DWELL TIME IN EXCESS OF ALLOWANCE</td>
+                    <td class="report-value"> {{ total_dwell_time }}</td>
+                </tr>
+                <tr class="report-row">
+                    <td style="font-weight: bold">Dwell Time Billable Increments</td>
+                    <td class="report-value"> {{ dwell_time_billalbe }}</td>
+                </tr>
+                <tr class="report-row">
+                    <td style="font-weight: bold">Billable Increments</td>
+                    <td class="report-value"> {{ billable_increments }}</td>
+                </tr>
+                <tr class="report-row">
+                    <td style="font-weight: bold">Dwell Time Rate from Tariff</td>
+                    <td class="report-value"> {{ currency }}{{ dwell_time_rate }}</td>
+                </tr>
+                <tr class="report-row">
+                    <td style="font-weight: bold">Billable Dwell Time</td>
+                    <td class="report-value"> {{ currency }}{{ billable_dwell_time }}</td>
+                </tr>
+            </table>
+            {% if map_url %}
+            <pdf:nextpage />
+            <center>
+                <img src="{{ map_url }}" alt="" style="width: 100%; margin-top: 20px">
+            </center>
+            {% endif %}
+            {% if photo1 or photo2 %}
+            <table>
+                <tr>
+                    <td width="50%">
+                        {% if photo1 %}
+                        <img style="max-width: 100%" src="{{ photo1 }}" /> {% endif %}
+                    </td>
+                    <td width="50%">
+                        {% if photo2 %}
+                        <img style="max-width: 100%" src="{{ photo2 }}" /> {% endif %}
+                    </td>
+                </tr>
+            </table>
+            <pdf:nextpage />
+            {% endif %}
+
+         
+        </div>
+    </div>
+
+</body>
+
+</html>
