@@ -112,7 +112,7 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
 @python_2_unicode_compatible
 class Vocabulary(DateTimeModel):
 	"""docstring for vocabulary"""
-	topic_id			= models.ForeignKey(get_user_model(), related_name='vocabularys', on_delete=models.CASCADE)
+	topic_id			= models.ForeignKey(Topic, related_name='vocabularys', on_delete=models.CASCADE)
 	note_source			= models.TextField(default='', blank=True, null=True)
 	langguage_source	= models.CharField(max_length=80, blank=True, null=True)
 	note_meaning		= models.TextField(default='', blank=True, null=True)
