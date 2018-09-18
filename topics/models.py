@@ -24,7 +24,7 @@ def get_file_path(instance, filename):
 
 
 def photo_upload_to(instance, filename):
-    return os.path.join(instance.directory_string_var, 'topics/%s'%str(instance.phone_number), '%s.jpg'%(instance.pk))
+    return os.path.join(instance.directory_string_var, 'topics/%s'%str(instance.user_id), '%s.jpg'%(instance.pk))
 
 def get_thumbnail_path(instance, filename):
     """
