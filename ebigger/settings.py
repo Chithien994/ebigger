@@ -124,10 +124,10 @@ SITE_ID = 1
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': os.environ.get('RDS_DB_NAME', 'chithien994$ebigger'),
-#         'USER': os.environ.get('RDS_USERNAME', 'chithien994'),
-#         'PASSWORD': os.environ.get('RDS_PASSWORD', 'Bigger@994'),
-#         'HOST': os.environ.get('RDS_HOSTNAME', 'chithien994.mysql.pythonanywhere-services.com'),
+#         'NAME': os.environ.get('RDS_DB_NAME', 'itbigger$default'),
+#         'USER': os.environ.get('RDS_USERNAME', 'itbigger'),
+#         'PASSWORD': os.environ.get('RDS_PASSWORD', 'Chithien1994'),
+#         'HOST': os.environ.get('RDS_HOSTNAME', 'itbigger.mysql.pythonanywhere-services.com'),
 #         'PORT': '3306',
 #     }
 # }
