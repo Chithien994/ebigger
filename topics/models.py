@@ -76,7 +76,7 @@ class Topic(DateTimeModel):
     privileged_id 	= models.ForeignKey(Privileged, related_name='privileged_topic', on_delete=models.CASCADE)
     name			= models.CharField(max_length=80, blank=True, null=True)
     picture 		= models.ImageField(upload_to=photo_upload_to, max_length=255, null=True, blank=True, default='topics/default/avatar-default.jpg')
-
+    directory_string_var = ''
     def __str__(self):
         return 'Topic #%s' % self.pk
 
