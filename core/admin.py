@@ -84,11 +84,14 @@ class UserAdmin(BaseUserAdmin):
 
     try:
         if BiggerUser.objects.count()==0:
-            BiggerUser.objects.create_superuser('chithien994@gmail.com','Chi Thien TCN', '0866505510', '123456')
+            BiggerUser.objects.create_superuser('chithien994@gmail.com','Chi Thien TCN', '0866505510', 'admin')
             print('Initialize admin account successfully!')
     except Exception as e:
         print(str(e))
-    
+    print('-------------------------------------------\n'
+        'Default administrator account:\n'
+        'User: 0866505510\nPassword: admin'
+        '\n-------------------------------------------')
     # def show_profile_picture(self, obj):
     #     return format_html('<img src="%s" class="rounded-circle" alt="Cinque Terre">'%obj.profile_picture)
     # show_profile_picture.mark_safe = True
