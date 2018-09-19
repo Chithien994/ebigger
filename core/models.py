@@ -106,7 +106,7 @@ class BiggerUser(DateTimeModel, AbstractBaseUser):
     email 			= models.EmailField(max_length=255,unique=True)
     full_name 		= models.CharField(max_length=80, blank=True, null=True)
     gender 			= models.CharField(max_length=6, choices=GENDER_CHOICES, default='other')
-    birthday 		= models.DateTimeField(_('Birthday'), editable=True, blank=True, null=True)
+    birthday 		= models.DateField(_('Birthday'), editable=True, blank=True, null=True)
     profile_picture = models.ImageField(upload_to=photo_upload_to, max_length=255, null=True, blank=True, default='default/avatar-default.jpg')
     phone_number 	= models.CharField(max_length=20, unique=True)
     company_name 	= models.CharField(null=True, blank=True, max_length=200, default='')
