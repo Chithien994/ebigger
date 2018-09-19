@@ -81,7 +81,7 @@ class Topic(DateTimeModel):
     picture 		= models.ImageField(upload_to=photo_upload_to, max_length=255, null=True, blank=True, default='topics/default/avatar-default.jpg')
     directory_string_var = ''
     def __str__(self):
-        return 'Topic #%s' % self.pk
+        return 'Topic #%s-%s' % (self.pk, self.name)
 
     def delete(self, *args, **kwargs):
         try:
