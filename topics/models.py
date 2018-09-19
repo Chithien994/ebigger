@@ -78,14 +78,15 @@ class Topic(DateTimeModel):
     user			= models.ForeignKey(get_user_model(), related_name='topics', on_delete=models.CASCADE)
     privileged  	= models.ForeignKey(Privileged, related_name='privileged_topic', on_delete=models.CASCADE)
     name			= models.CharField(max_length=80, blank=True, null=True)
-    picture 		= models.ImageField(upload_to=photo_upload_to, max_length=255, null=True, blank=True, default='topics/default/avatar-default.jpg')
+    picture 		= models.ImageField(upload_to=photo_upload_to, max_length=255, null=True, blank=True, default='topics/default/default.jpg')
     directory_string_var = ''
     def __str__(self):
         return 'Topic #%s-%s' % (self.pk, self.name)
 
     def delete(self, *args, **kwargs):
         try:
-            self.picture.delete()
+            if 'default' not in str(self.picture):
+                self.picture.delete()
         except:
             pass
         super(Topic, self).delete(*args, **kwargs)
@@ -106,7 +107,7 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
     except Topic.DoesNotExist:
         return False
     new_picture = instance.picture
-    if not old_picture == new_picture:
+    if not old_picture == new_picture and 'default' not in str(self.picture):
         try:
             old_picture.delete(save=False)
         except:
@@ -117,9 +118,9 @@ class Vocabulary(DateTimeModel):
 	"""docstring for vocabulary"""
 	topic		    	= models.ForeignKey(Topic, related_name='vocabularys', on_delete=models.CASCADE)
 	note_source			= models.TextField(default='', blank=True, null=True)
-	langguage_source	= models.CharField(max_length=80, blank=True, null=True)
+	langguage_source	= models.CharField(max_length=4, blank=True, default='en')
 	note_meaning		= models.TextField(default='', blank=True, null=True)
-	langguage_meaning	= models.CharField(max_length=80, blank=True, null=True)
+	langguage_meaning	= models.CharField(max_length=4, blank=True, default='en')
 	learned				= models.BooleanField(default=False)
 
 	def __str__(self):

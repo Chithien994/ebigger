@@ -39,12 +39,13 @@ class CustomTokenAuthentication(TokenAuthentication):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [CustomTokenAuthentication,
+    queryset                = User.objects.all()
+    serializer_class        = UserSerializer
+    permission_classes      = [IsAuthenticated]
+    authentication_classes  = [CustomTokenAuthentication,
                               SessionAuthentication, BasicAuthentication]
-
+    filter_backends         = (filters.OrderingFilter)
+    ordering_fields         = '__all__'
 
 def reset_password(request, uidb64, token):
     user_id = urlsafe_base64_decode(uidb64)
@@ -72,35 +73,35 @@ def reset_password(request, uidb64, token):
                   {'uidb64': uidb64, 'token': token, 'msg': msg, 'password_change_form': password_change_form})
 
 class TopicViewSet(viewsets.ModelViewSet):
-    queryset = Topic.objects.all()
-    serializer_class = TopicSerializer
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [CustomTokenAuthentication,
+    queryset                = Topic.objects.all()
+    serializer_class        = TopicSerializer
+    permission_classes      = [IsAuthenticated]
+    authentication_classes  = [CustomTokenAuthentication,
                               SessionAuthentication, BasicAuthentication]
-    filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
-    filter_fields = ('user',)
-    ordering_fields = '__all__'
+    filter_backends         = (DjangoFilterBackend, filters.OrderingFilter)
+    filter_fields           = ('user',)
+    ordering_fields         = '__all__'
 
 
 class VocabularyViewSet(viewsets.ModelViewSet):
-    queryset = Vocabulary.objects.all()
-    serializer_class = VocabularySerializer
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [CustomTokenAuthentication,
+    queryset                = Vocabulary.objects.all()
+    serializer_class        = VocabularySerializer
+    permission_classes      = [IsAuthenticated]
+    authentication_classes  = [CustomTokenAuthentication,
                               SessionAuthentication, BasicAuthentication]
-    filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
-    filter_fields = ('topic',)
-    ordering_fields = '__all__'
+    filter_backends         = (DjangoFilterBackend, filters.OrderingFilter)
+    filter_fields           = ('topic',)
+    ordering_fields         = '__all__'
 
 class FeedbackViewSet(viewsets.ModelViewSet):
-    queryset = Feedback.objects.all()
-    serializer_class = FeedbackSerializer
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [CustomTokenAuthentication,
+    queryset                = Feedback.objects.all()
+    serializer_class        = FeedbackSerializer
+    permission_classes      = [IsAuthenticated]
+    authentication_classes  = [CustomTokenAuthentication,
                               SessionAuthentication, BasicAuthentication]
-    filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
-    filter_fields = ('user',)
-    ordering_fields = '__all__'
+    filter_backends         = (DjangoFilterBackend, filters.OrderingFilter)
+    filter_fields           = ('user',)
+    ordering_fields         = '__all__'
 
 @csrf_exempt
 @permission_classes((permissions.IsAuthenticated,))
@@ -113,7 +114,7 @@ def oauth2callback(request):
     ]
     flow = client.flow_from_clientsecrets(
         settings.CLIENT_SECRET,
-        scope=','.join(scopes),
+        scope       = ','.join(scopes),
         redirect_uri=get_site_url() + reverse('oauth2callback'))
     flow.params['include_granted_scopes'] = 'true'
     flow.params['approval_prompt'] = 'force'
@@ -121,7 +122,7 @@ def oauth2callback(request):
     try:
         auth_uri = flow.step1_get_authorize_url()
         if request.GET.get('code'):
-            auth_code = request.GET.get('code')
+            auth_code   = request.GET.get('code')
             credentials = flow.step2_exchange(auth_code)
             with open(settings.CLIENT_DATA, 'w') as f:
                 print('credentials', credentials.to_json())

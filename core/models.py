@@ -69,13 +69,13 @@ class BiggerUserManager(BaseUserManager):
             raise ValueError('Users must have an email address')
 
         user = self.model(
-            email=self.normalize_email(email),
-            full_name=full_name,
+            email       = self.normalize_email(email),
+            full_name   = full_name,
             phone_number=phone_number,
         )
 
         user.set_password(password)
-        user.save(using=self._db)
+        user.save(using =self._db)
         return user
 
     def create_superuser(self, email, full_name, phone_number, password):
@@ -84,12 +84,12 @@ class BiggerUserManager(BaseUserManager):
         """
         user = self.create_user(
             email,
-            password=password,
-            full_name=full_name,
+            password    = password,
+            full_name   = full_name,
             phone_number=phone_number,
         )
-        user.is_admin = True
-        user.save(using=self._db)
+        user.is_admin   = True
+        user.save(using =self._db)
         return user
 
 
@@ -157,7 +157,8 @@ class BiggerUser(DateTimeModel, AbstractBaseUser):
 
     def delete(self, *args, **kwargs):
         try:
-            self.profile_picture.delete()
+            if 'default' not in str(self.picture):
+                self.profile_picture.delete()
         except:
             pass
         super(BiggerUser, self).delete(*args, **kwargs)
@@ -187,7 +188,7 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
     except BiggerUser.DoesNotExist:
         return False
     new_profile_picture = instance.profile_picture
-    if not old_profile_picture == new_profile_picture:
+    if not old_profile_picture == new_profile_picture and 'default' not in str(self.picture):
         try:
             old_profile_picture.delete(save=False)
         except:
