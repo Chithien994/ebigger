@@ -1,0 +1,24 @@
+.red{
+    color: red;
+}
+.center{
+    text-align: center;
+}
+.modal-header{
+      background: #538ce8;
+}
+.white{
+    color: #ffffff;
+}
+.label-control{
+    line-height: 44px;
+}
+.clearfix{
+    clear: both;
+}
+.blue{
+    color: #3498db
+}
+.action-buttons {
+  width: 150px;
+}

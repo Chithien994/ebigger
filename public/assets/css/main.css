@@ -1,0 +1,1010 @@
+body {
+    background: #538ce8;
+    font-family: 'Avenir Next LT Pro Regular', 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #555;
+    -webkit-font-smoothing: antialiased;
+    -webkit-overflow-scrolling: touch;
+}
+
+.copyright-text {
+    color: white;
+    font-size: 12px;
+}
+
+/* Titles */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Avenir Next LT Pro Regular', 'Lato', sans-serif;
+    font-weight: 300;
+    color: #333;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+h3 {
+    color: #95a5a6;
+    font-weight: 400;
+}
+
+h4 {
+    color: #95a5a6;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+/* Paragraph & Typographic */
+
+p {
+    line-height: 28px;
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+.centered {
+    text-align: center;
+}
+
+/* Links */
+
+a {
+    color: #3498db;
+    word-wrap: break-word;
+    -webkit-transition: color 0.1s ease-in, background 0.1s ease-in;
+    -moz-transition: color 0.1s ease-in, background 0.1s ease-in;
+    -ms-transition: color 0.1s ease-in, background 0.1s ease-in;
+    -o-transition: color 0.1s ease-in, background 0.1s ease-in;
+    transition: color 0.1s ease-in, background 0.1s ease-in;
+}
+
+a:hover,
+a:focus {
+    color: #7b7b7b;
+    text-decoration: none;
+    outline: 0;
+}
+
+a:before,
+a:after {
+    -webkit-transition: color 0.1s ease-in, background 0.1s ease-in;
+    -moz-transition: color 0.1s ease-in, background 0.1s ease-in;
+    -ms-transition: color 0.1s ease-in, background 0.1s ease-in;
+    -o-transition: color 0.1s ease-in, background 0.1s ease-in;
+    transition: color 0.1s ease-in, background 0.1s ease-in;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+.navbar-default {
+    background-color: #538ce8;
+    border-color: transparent;
+}
+
+.navbar-default .navbar-brand {
+    color: white;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: white;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+/* Helpers */
+
+.mt {
+    margin-top: 40px;
+}
+
+.form-control {
+    height: 42px;
+    font-size: 16px;
+    width: 280px;
+}
+
+i {
+    color: #3498db;
+    margin: 8px;
+}
+
+#logo img {
+    width: 180px;
+}
+
+/* HeaderWrap */
+
+#headerwrap {
+    /* background: url(../img/bg01.jpg) no-repeat center top; */
+    background-color: #3498db;
+    margin-top: -20px;
+    padding-top: 200px;
+    background-attachment: relative;
+    background-position: center center;
+    min-height: 650px;
+    width: 100%;
+    -webkit-background-size: 100%;
+    -moz-background-size: 100%;
+    -o-background-size: 100%;
+    background-size: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#headerwrap h1 {
+    margin-top: 60px;
+    margin-bottom: 15px;
+    color: white;
+    font-size: 45px;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.form-heading {
+    color: #538ce8;
+    font-size: 22px;
+    text-align: left;
+    margin-bottom: 35px;
+}
+
+.form-heading span.line {
+    display: block;
+    height: 2px;
+    width: 50%;
+    background: #538ce8;
+    margin-top: 10px;
+    float: right;
+}
+
+.login-form {
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px #999;
+    padding: 33px;
+}
+
+input.text-input {
+    margin-bottom: 5px;
+    width: 100%;
+    padding: 10px;
+    color: #555;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+.pdr0 {
+    padding-right: 0;
+}
+
+#wrapper {
+    padding: 20px;
+}
+
+input.text-input:focus {
+    outline-color: #538ce8;
+}
+
+#passwordForm button {
+    width: 108px;
+    height: 44px;
+    font-size: 18px;
+}
+
+#passwordForm button.reset-form {
+    background: #d0112b;
+    border-color: #d0112b;
+}
+
+label.error {
+    text-align: left;
+    display: block;
+    font-weight: normal;
+    color: #d0112b;
+    white-space: nowrap;
+}
+
+/*.error{
+    color: #d0112b;
+}*/
+
+/*LOGIN FORM*/
+
+.lc-logo {
+    margin-bottom: 35px;
+}
+
+.lc-logo img {
+    max-width: 260px;
+}
+
+.login-btn {
+    background: #538ce8;
+    border-color: #538ce8;
+    width: 100%;
+    font-size: 18px;
+    height: 44px;
+}
+
+ul.errorlist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    color: #d0112b;
+}
+
+@media screen and (min-width: 280px) and (max-width: 750px) {
+    #passwordForm button.reset-form {
+        margin-left: 20px;
+    }
+
+    .form-heading span.line {
+        width: 40%;
+    }
+}
+
+.form-heading .title {
+    display: table-cell;
+    vertical-align: top;
+    white-space: nowrap;
+    padding-right: 10px;
+}
+
+.form-heading .blue-line {
+    display: table-cell;
+    vertical-align: middle;
+    overflow: hidden;
+    width: 100%;
+    height: 2px;
+}
+
+.form-heading .blue-line div {
+    background: #538ce8;
+    height: 2px;
+    margin-top: 2px;
+}
+
+.btn.btn-white {
+    border-width: 1px;
+}
+
+.btn-white.btn-primary {
+    border-color: #8aafce;
+    color: #6688a6 !important;
+}
+
+.btn.btn-white {
+    text-shadow: none !important;
+    background-color: #FFF !important;
+}
+
+.btn.btn-white.no-hover:active,
+.btn.btn-white.no-hover:hover {
+    background-color: #FFF !important
+}
+
+.btn.btn-white.active,
+.btn.btn-white:focus {
+    box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, .1) !important
+}
+
+@media screen and (min-width: 320px) and (max-width: 568px),
+(min-width: 320px) and (max-width: 780px) and (orientation: portrait) {
+    .form-heading span.line {
+        display: none;
+    }
+}
+
+.loading_place {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    text-align: center;
+    vertical-align: middle;
+    background: #fff;
+    opacity: 0.7;
+    z-index: 9999;
+}
+
+.loading_place img {
+    top: 30%;
+    position: relative;
+}
+
+.account-group a {
+    text-decoration: underline;
+}
+
+.account-group {
+    margin-top: 20px;
+}
+
+.font-normal {
+    font-weight: normal;
+}
+
+.btn-big {
+    background: #538ce8;
+    border-color: #538ce8;
+    width: 100%;
+    font-size: 18px;
+    height: 44px;
+}
+
+.btn-lg {
+    font-size: 18px;
+    height: 44px;
+}
+
+.required-field::-webkit-input-placeholder,
+#createAccountForm #id_company::-webkit-input-placeholder {
+    color: transparent !important;
+}
+
+.required-field::-moz-placeholder,
+.required-field::-moz-placeholder,
+#createAccountForm #id_company::-moz-placeholder {
+    /* Firefox 19+ */
+    color: transparent !important;
+}
+
+.required-field:-ms-input-placeholder,
+#createAccountForm #id_company:-ms-input-placeholder {
+    color: transparent !important;
+}
+
+select[required]:invalid + span {
+    display: inline-block;
+}
+
+select[required] + span,
+span.expiration_year,
+select[required] + label + span {
+    color: #999;
+    position: absolute;
+    top: 15px;
+    left: 100px;
+    font-weight: normal;
+}
+
+span.expiration_month {
+    left: 115px !important;
+}
+
+select[required] + label + span span {
+    color: red;
+}
+
+select.form-control {
+    height: 52px;
+    color: #ccc;
+    padding-right: 5px;
+    margin-bottom: 4px;
+}
+
+.select-label {
+    position: absolute;
+    top: 15px;
+    font-weight: normal;
+    color: #ccc;
+    left: 32px;
+}
+
+.separator {
+    width: 10px;
+    float: left;
+    display: inline-block;
+    height: 44px;
+}
+
+#subscription-plans {
+    margin-top: 50px;
+}
+
+.plan {
+    padding: 10px 0;
+    background: white;
+    border: 1px solid #ccd5df;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    /** Chrome & Safari **/
+    -moz-transition: all 0.2s ease-in-out;
+    /** Firefox **/
+    -o-transition: all 0.2s ease-in-out;
+    /** Opera **/
+    margin-bottom: 30px;
+}
+
+.plan-heading h3 {
+    color: #d0112b;
+    font-size: 20px;
+    text-align: center;
+}
+
+.plan:hover {
+    cursor: pointer;
+    box-shadow: 1px 0 10px #ccd5df;
+}
+
+.plan-price {
+    background: #d52840;
+    color: white;
+    font-size: 20px;
+    padding: 5px 20px;
+    text-align: center;
+}
+
+.plan-description ul li {
+    padding: 5px;
+    text-align: center;
+    font-size: 16px;
+    color: #252525;
+}
+
+.plan-description ul li:not(:last-child) {
+    border-bottom: 1px solid #e2e9f0;
+}
+
+.plan-description ul {
+    list-style: none;
+    margin: 0;
+    padding: 20px;
+}
+
+label.block {
+    width: 100%;
+}
+
+span.placeholder-content {
+    position: absolute;
+    top: 14px;
+    left: 15px;
+    color: #cccccc;
+}
+
+span.placeholder-content span {
+    color: red;
+    font-size: 12px;
+}
+
+.custom-form-control {
+    position: relative;
+    height: 85px;
+}
+
+.credit-card-help {
+    margin: 0;
+    margin-left: 5px;
+}
+
+#show-cc-help {
+    cursor: pointer;
+}
+
+#cc-help-box {
+    position: absolute;
+    top: 100%;
+    left: 32%;
+    border: 1px solid #d0112b;
+    min-height: 182px;
+    width: 360px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 1px 2px 5px #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    transition: all 2s ease-in-out;
+    -webkit-transition: all 2s ease-in-out;
+    /** Chrome & Safari **/
+    -moz-transition: all 2s ease-in-out;
+    /** Firefox **/
+    -o-transition: all 2s ease-in-out;
+    /** Opera **/
+}
+
+#cc-help-box h3 {
+    color: #d0112b;
+    font-size: 24px;
+    margin-top: 0;
+    font-family: 'Avenir Next LT Pro Bold';
+}
+
+#cc-help-box p {
+    color: #252525;
+    font-size: 16px;
+    margin-bottom: 10px;
+    line-height: 20px;
+}
+
+#cc-help-box span {
+    color: #363636;
+    font-size: 12px;
+    margin-top: 0;
+    line-height: 18px;
+    margin-bottom: 0;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.font-normal {
+    font-weight: normal;
+}
+
+.btn-danger {
+    background: #d0112b;
+    border-color: #d0112b !important;
+}
+
+.btn-primary {
+    background: #538ce8;
+    border-color: #538ce8;
+}
+
+#myaccount-nav {
+    margin-top: 15px;
+    height: 65px;
+}
+
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+    color: #fff;
+    background-color: transparent;
+}
+
+ul.navbar-nav.myaccount li:hover {
+    border-bottom-color: transparent;
+}
+
+ul.dropdown-menu li a {
+    color: white;
+    text-align: left;
+}
+
+ul.dropdown-menu {
+    background: #538ce8;
+}
+
+#myaccount-nav > a {
+    width: 220px;
+    text-align: right;
+}
+
+#myaccount-nav ul.dropdown-menu {
+    width: 200px;
+    top: 66px;
+}
+
+#myaccount-nav ul.dropdown-menu li:not(:last-child) {
+    border-bottom: 1px solid #6ca2fa;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+    background-color: transparent;
+}
+
+#myaccount-nav i {
+    width: 20px;
+}
+
+/*CURRENT PLAN*/
+
+.current_plan .plan-price,
+.selected_plan .plan-price,
+.plan:hover .plan-price {
+    background: white;
+    color: #d52840;
+}
+
+.plan.current_plan,
+.plan.selected_plan,
+.plan:hover {
+    background: #d52840;
+    padding-top: 20px;
+    padding-bottom: 20px !important;
+    margin-top: -10px;
+    margin-bottom: 0;
+}
+
+.current_plan .plan-description ul li,
+.plan:hover .plan-description ul li,
+.selected_plan .plan-description ul li,
+.selected_plan .plan-heading h3,
+.plan:hover .plan-heading h3,
+.current_plan .plan-heading h3 {
+    color: white;
+}
+
+#subscription-plans .col-20-percent {
+    width: 20%;
+    float: left;
+}
+
+#subscription-plans .col-25-percent {
+    width: 25%;
+    float: left;
+}
+
+/*ACCOUTN INFORMATION*/
+
+.account-information {
+    border-top: 1px solid #d7d7d7;
+    height: 80px;
+    padding: 20px 40px;
+    color: #252525;
+}
+
+.upgrade-account {
+    padding: 30px 40px;
+}
+
+.credit-percent {
+    width: 300px;
+    margin-top: 5px;
+    background: white;
+    height: 20px;
+    border: 1px solid #d0dcf0;
+}
+
+a.underline {
+    text-decoration: underline;
+}
+
+.current_plan:hover,
+.disable_plan:hover {
+    cursor: default;
+}
+
+/*FOOTER*/
+
+.footer {
+    position: relative;
+    z-index: 2;
+    background: #222;
+    padding: 68px 20px;
+}
+
+.ftr-title,
+.ftr-list-box h6,
+.ftr-text-widget h6 {
+    color: #FFF;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 19px;
+}
+
+.footer p {
+    color: #888;
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.footer address {
+    margin-bottom: 0;
+}
+
+.copy {
+    margin-top: 65px;
+    text-transform: uppercase;
+    color: #777;
+    font-size: 11px;
+}
+
+.copy .copy-right {
+    float: left;
+}
+
+.copy span {
+    color: #fff;
+}
+
+.copy-links {
+    padding-left: 20px;
+    float: left;
+}
+
+.copy-links a {
+    display: inline-block;
+    margin: 0 10px;
+    position: relative;
+}
+
+.contact-address {
+    color: #777;
+    margin-top: -10px;
+}
+
+.contact-address .fa {
+    font-size: 26px;
+}
+
+.contact-phone .fa,
+.contact-mail .fa,
+.contact-address .fa {
+    width: 35px;
+    color: #d0202e;
+}
+
+.contact-phone .fa {
+    font-size: 30px;
+}
+
+.footer a {
+    color: #777;
+}
+
+a.btn:hover {
+    color: white !important
+}
+
+.error-modal {
+    color: #d52840;
+}
+
+/*CANCEL ACCOUNT*/
+
+#cancel-account-popup {
+    padding: 0 20px;
+}
+
+#cancel-account-popup h3 {
+    color: #d0112b;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.short-desc {
+    color: #252525;
+    font-size: 14px;
+}
+
+p.warning-msg {
+    color: #252525;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 20px;
+    line-height: 18px;
+}
+
+a.btn.btn-cancel-account {
+    color: #538ce8;
+    border: 1px solid #538ce8;
+    margin: 0 auto;
+    display: block;
+    width: 150px;
+    line-height: 31px;
+    padding: 0;
+    height: 31px;
+    font-family: 'Avenir Next LT Pro Demi';
+}
+
+a.btn.btn-cancel-account:hover {
+    background: #538ce8;
+}
+
+h3.page-title i {
+    margin-left: 0;
+}
+
+.action-buttons i {
+    margin: 0 2px;
+}
+
+.green {
+    color: #47a447;
+}
+
+.orange {
+    color: #ed9c28;
+}
+
+table.dataTable.display tbody td {
+    border-top: 1px solid #ddd;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.red {
+    color: red;
+}
+
+.blue {
+    color: #3498db;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.history-icon {
+    background-color: white;
+    color: #333;
+    border: 1px solid #ccc;
+    height: 24px;
+    width: 24px;
+    text-align: center;
+    border-radius: 24px;
+    line-height: 24px;
+}
+
+.history-date {
+    display: table-cell;
+    vertical-align: top;
+    white-space: nowrap;
+    padding-right: 10px;
+}
+
+.history-line {
+    display: table-cell;
+    vertical-align: middle;
+    overflow: hidden;
+    width: 100%;
+    height: 2px;
+}
+
+.history-line div {
+    background: #ccc;
+    height: 1px;
+    margin-top: 1px;
+    width: 97%;
+}
+
+.history-line div i {
+    position: absolute;
+    right: -20px;
+    top: 0;
+    margin-top: -2px;
+}
+
+.credit-history {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.history-icon:hover {
+    cursor: pointer;
+}
+
+.history-info {
+    display: none;
+}
+
+.history-info.open {
+    display: block !important;
+}
+
+.history-wrapper {
+    border: 1px solid #ccc;
+    padding: 0 20px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.plan-description p {
+    font-size: 18px;
+    margin-bottom: 0;
+}
+
+.plan-description {
+    text-align: center;
+}
+
+.premium-plan .plan-description li {
+    border: none !important;
+}
+
+.premium-plan .plan-description ul {
+    margin-bottom: 4px;
+}
+
+.premium-plan .plan-price {
+    height: 38px;
+    background-color: transparent;
+}
+
+.premium-plan:hover {
+    cursor: default;
+}
+
+#zapier_help:focus {
+    border: none;
+    outline: 0;
+}
+
+a.contact-btn {
+    color: #ffffff;
+    background-color: #538ce8;
+    padding: 10px;
+    font-weight: bold;
+    line-height: 16px;
+    padding-top: 15px;
+    margin-left: 15px;
+    margin-top: -5px;
+}
+
+a.contact-btn:hover {
+    background-color: #3276b1;
+    color: #ffffff;
+}
+
+.enterprise-text {
+    font-size: 16px;
+    margin-top: 40px;
+    color: #555;
+    font-weight: bold;
+}
+
+.app-user-note {
+    margin-bottom: 5px;
+    float: left;
+    position: absolute;
+}
+
+.mb0 {
+    margin-bottom: 0;
+}
+
+.mt0 {
+    margin-top: 0;
+}
+
+span.required-field {
+    color: red;
+    font-size: 12px;
+}
+
+.purple {
+    color: purple;
+}
+
+.h20 {
+    height: 20px;
+}
+
+.hoverable:hover {
+    cursor: pointer;
+}
+
+.no-hover:hover {
+    cursor: default;
+}
+
+.request-leads-icon {
+    background: url(../images/request-leads.png) no-repeat;
+    width: 24px;
+    display: inline-block;
+    height: 16px;
+}

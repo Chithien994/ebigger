@@ -1,0 +1,208 @@
+body{
+    background: #f1f1f1;
+}
+
+ul.navbar-nav {
+    margin-top: -15px;
+}
+ul.navbar-nav li{
+    text-align: center;
+}
+#logo {
+    padding: 7px 0;
+}
+#logo a {
+    color: white;
+    font-size: 24px;
+}
+.navbar-fixed-top i {
+    color: white;
+    font-size: 20px;
+}
+a:hover,  a:focus {
+    color:  #ec683f;
+}
+.nav > li > a:hover, .nav > li > a:focus{
+    color:  #ec683f!important;
+}
+.navbar-nav > li > a {
+    padding-bottom: 5px;
+}
+.dashboard i{
+    margin-left: 0;
+}
+button.navbar-toggle {
+    margin-top: 15px;
+}
+.navbar-right{
+    margin-right: 25px!important
+}
+.navbar-right a{
+  padding-right: 0!important;
+  padding-left: 0!important;
+}
+.navbar-default .navbar-toggle:hover span, .navbar-default .navbar-toggle:focus span{
+    background-color: #ec683f!important;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus{
+    background-color: #fff!important;
+}
+
+ul.navbar-nav li {
+    text-align: center;
+    border-bottom: 4px solid transparent;
+}
+
+ul.navbar-nav li.current, ul.navbar-nav li:hover  {
+    border-bottom: 4px solid #ec683f;
+}
+.faq_show img {
+  max-width: 100%;
+}
+/*#redactor-image-link + label {
+  display: none!important;
+}*/
+nav#breadcrumb {
+margin-top: 65px;
+background: white;
+height: 50px;
+}
+/*.pd25{
+    padding: 0 25px;
+}
+.pd15{
+    padding: 15px;
+}*/
+#breadcrumb ol {
+    background: white;
+    margin-bottom: 0;
+    margin-top: 3px;
+    padding: 8px 0;
+}
+#breadcrumb ol a{
+    font-size: 14px;
+}
+a.dashboard, a.dashboard i {
+color: #888888;
+}
+#breadcrumb ol a {
+    color: #888888;
+}
+#breadcrumb ol a.active {
+    color: #3498db;
+}
+.dataTable thead tr {
+background: #d9e5f3;
+}
+span.untranscribed,  span.transcribed{
+    background: #3a6a77;
+    color: white;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -0-border-radius: 4px;
+
+}
+span.transcribed {
+    background: #ec683f;
+}
+label.error{
+    color: #d0112b!important;
+}
+#leads tbody tr{
+    background: #f9f9f9
+}
+#leads thead {
+    font-size: 14px;
+    color: #545454;
+    font-family: 'Avenir Next LT Pro Demi';
+}
+.completed-checkbox:hover {
+    cursor: pointer;
+}
+.scanned-data label, .scanned-data > div {
+    padding-left: 0;
+}
+.completed-checkbox {
+    height: 14px;
+    display: block;
+    width: 14px;
+    float: left;
+    margin-top: 3px;
+    margin-right: 5px;
+}
+#show_completed {
+    background: white;
+    margin-top: 1px;
+    position: absolute;
+}
+#show_completed:active, #show_completed:focus{
+    outline: none;
+}
+.completed-checkbox.checked #show_completed{
+    background: url(../images/checked-icon.png);
+}
+#leads_wrapper{
+    /*padding: 0 10px;*/
+}
+#leads {
+    margin-top: 10px;
+}
+ul.pagination {
+    margin-top: 5px;
+}
+
+.btn-danger {
+    color: #ffffff;
+    background-color: #d50f27;
+    border-color: #d50f27;
+}
+.btn {
+    font-size: 16px;
+}
+table.dataTable.no-footer {
+border-bottom: 1px solid #ddd;
+}
+h3.page-title {
+    color: #3498db
+}
+.scanned-data {
+    word-wrap: break-word;
+    max-width: 100%;
+}
+.ready-icon {
+    color: #ec683f;
+    margin: 0;
+    margin-left: 3px;
+    font-size: 20px;
+}
+.loadding-icon {
+    color: #538ce8;
+    margin: 0;
+    font-size: 20px;
+}
+@media screen and (min-width: 300px) and (max-width: 767px){
+    .navbar-right{
+        margin-left: -30px;
+    }
+}
+@media screen and (min-width: 768px){
+    #navigation{
+        height: 65px;
+    }
+}
+table.dataTable thead th {
+    padding: 10px 15px;
+    vertical-align: middle;
+}
+/*#leads td, #leads th{
+    white-space: nowrap;
+}*/
+.rotate-button{
+    background-color: black;
+    background-image: none!important;
+    color: white;
+}

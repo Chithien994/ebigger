@@ -1,0 +1,103 @@
+@media screen and (max-width: 1024px) {
+    .exp-separator {
+        padding: 10px;
+    }
+
+    span.expiration_year {
+        left: 98px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #subscription-plans {
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 100%;
+    }
+
+}
+
+@media screen and (max-width: 767px) {
+    body {
+        font-size: 14px;
+    }
+
+    select[required] + span, span.expiration_year, select[required] + label + span {
+        top: 10px;
+    }
+
+    .container-fluid {
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    #subscription-plans .col-25-percent {
+        width: 100%;
+    }
+
+    .enterprise-text {
+        display: none;
+    }
+
+    .form-heading {
+        font-size: 18px;
+    }
+
+    .custom-form-control {
+        min-height: 70px;
+        height: auto;
+    }
+
+    .first-group, .second-group {
+        margin-bottom: 0;
+    }
+
+    #id_expiration_year {
+        margin-bottom: 10px;
+    }
+
+    #id_expiration_month {
+        margin-bottom: 25px;
+    }
+
+    select.form-control {
+        height: 42px;
+    }
+
+    #forgotPasswordForm .button-group {
+        padding: 0
+    }
+
+    label.error {
+        white-space: normal;
+    }
+
+    .lc-logo {
+        margin-bottom: 15px;
+    }
+
+    #logo {
+        margin-top: 0;
+    }
+
+    #aggreement label {
+        line-height: 28px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .lc-logo img {
+        max-width: 200px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .account-group a {
+        width: 100%;
+        display: block;
+    }
+}

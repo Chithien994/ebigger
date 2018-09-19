@@ -1,0 +1,159 @@
+span.ctr-label {
+    margin-right: 10px;
+}
+
+#manage-account .space {
+    height: 10px;
+}
+
+#manage-account .label-control, #changePasswordForm .label-control {
+    line-height: 44px;
+}
+
+@media screen and (max-width: 1024px) {
+    .history-icon {
+        cursor: pointer;
+    }
+}
+
+@media screen and (max-width: 1023px) {
+    #changePasswordForm .form-control {
+        width: 100%;
+    }
+
+    .remaining-credit, .history-info div {
+        text-align: left;
+    }
+}
+
+@media screen and (max-width: 767px) {
+
+    .account-information > div[class*=col] {
+        padding: 10px 0;
+    }
+
+    .account-information .ctr-label {
+        font-weight: bold;
+        float: left;
+    }
+
+    .account-information > div.ctr-label + div {
+        padding-top: 0;
+    }
+
+    .account-information > div.ctr-label {
+        padding-bottom: 0;
+    }
+
+    body {
+        font-size: 14px;
+    }
+
+    .form-heading {
+        font-size: 18px;
+    }
+
+    #my-account #subscription-plans, .enterprise-text, button.navbar-toggle, .upgrade-account, .credit-percent, #zapier_help, .breadcrumb {
+        display: none;
+    }
+    a.contact-btn {
+        display: block;
+        margin-top: 10px;
+    }
+    .enterprise-text {
+      font-size: 12px;
+      padding-top: 40px;
+      overflow: hidden;
+    }
+    .remaining-credit.align-right {
+        text-align: left;
+    }
+
+    #change_cc {
+    }
+
+    #logo img {
+        width: 140px;
+    }
+
+    .custom-form-control {
+        height: auto;
+    }
+
+    #subscription-plans {
+        margin-top: 0px;
+    }
+
+    #subscription-plans .col-25-percent {
+        width: 100%;
+    }
+
+    .plan-heading h3 {
+        margin-top: 0;
+    }
+
+    #subscription-plans .plan {
+        margin-top: 20px;
+        margin-bottom: 0;
+    }
+
+    h3.page-title.blue {
+        text-align: center;
+    }
+
+    .account-information {
+        min-height: 40px;
+        height: auto;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    a.logout-btn {
+        color: white;
+        padding-top: 18px;
+        font-weight: bold;
+    }
+
+    nav#breadcrumb {
+        margin-top: 5px;
+    }
+
+    .footer {
+        padding: 8px 20px;
+    }
+
+    .form-control {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    h3.page-title {
+        margin-top: 0;
+    }
+
+    #manage-account .label-control, #changePasswordForm .label-control {
+        line-height: 30px;
+    }
+
+    .copy-right {
+        width: 100%;
+        text-align: center;
+    }
+
+    .copy-right span {
+        word-break: break-all;
+        width: 100%;
+        display: block;
+        font-size: 10px;
+    }
+
+    .copy-links {
+        width: 100%;
+        text-align: CENTER;
+        padding: 0;
+    }
+}
+
+.break-all {
+    word-break: break-all;
+}
