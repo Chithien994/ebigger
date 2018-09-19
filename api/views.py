@@ -44,7 +44,7 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes      = [IsAuthenticated]
     authentication_classes  = [CustomTokenAuthentication,
                               SessionAuthentication, BasicAuthentication]
-    filter_backends         = (filters.OrderingFilter)
+    filter_backends         = (filters.OrderingFilter,)
     ordering_fields         = '__all__'
 
 def reset_password(request, uidb64, token):
