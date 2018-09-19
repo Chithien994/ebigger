@@ -49,9 +49,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
 def reset_password(request, uidb64, token):
     user_id = urlsafe_base64_decode(uidb64)
-    user = User.objects.get(pk=user_id)
+    user    = User.objects.get(pk=user_id)
     password_change_form = ChangePasswordForm()
-    msg = ''
+    msg     = ''
     if not user:
         return render(request, 'frontend/reset_password_invalid.html', {})
 
