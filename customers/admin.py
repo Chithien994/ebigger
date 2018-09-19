@@ -11,6 +11,6 @@ class FeedbackAdmin(admin.ModelAdmin):
 	search_fields = ['email']
 
 	def email(self, obj):
-		return 	get_user_model().objects.filter(pk=obj.user_id).email
+		return 	get_user_model().objects.filter(pk=obj.user.pk).email
 
 admin.site.register(Feedback, FeedbackAdmin)

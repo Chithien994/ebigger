@@ -1,6 +1,9 @@
 import os
 import datetime
 
+from datetime import date, time
+
+from random import randint
 from django.db import models
 from django.dispatch.dispatcher import receiver
 from django.utils.encoding import python_2_unicode_compatible
@@ -24,7 +27,7 @@ def get_file_path(instance, filename):
 
 
 def photo_upload_to(instance, filename):
-    return os.path.join(instance.directory_string_var, 'topics/%s'%str(instance.user_id), '%s.jpg'%(instance.pk))
+    return os.path.join(instance.directory_string_var, 'topics/%s'%str(instance.user.pk), '%s.jpg'%str(instance.created.now().strftime('%d%m%Y%H%M%S')))
 
 def get_thumbnail_path(instance, filename):
     """
@@ -45,7 +48,7 @@ class Privileged(models.Model):
 	name = models.CharField(max_length=20, blank=False)
 
 	def __str__(self):
-		return 'Privileged # key:%s' % self.key
+		return 'Shared with: %s' % self.name
 
 	class Meta:
 		db_table = 'privilegeds'
@@ -72,8 +75,8 @@ class DateTimeModel(models.Model):
 
 @python_2_unicode_compatible
 class Topic(DateTimeModel):
-    user_id			= models.ForeignKey(get_user_model(), related_name='topics', on_delete=models.CASCADE)
-    privileged_id 	= models.ForeignKey(Privileged, related_name='privileged_topic', on_delete=models.CASCADE)
+    user			= models.ForeignKey(get_user_model(), related_name='topics', on_delete=models.CASCADE)
+    privileged  	= models.ForeignKey(Privileged, related_name='privileged_topic', on_delete=models.CASCADE)
     name			= models.CharField(max_length=80, blank=True, null=True)
     picture 		= models.ImageField(upload_to=photo_upload_to, max_length=255, null=True, blank=True, default='topics/default/avatar-default.jpg')
     directory_string_var = ''
@@ -112,7 +115,7 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
 @python_2_unicode_compatible
 class Vocabulary(DateTimeModel):
 	"""docstring for vocabulary"""
-	topic_id			= models.ForeignKey(Topic, related_name='vocabularys', on_delete=models.CASCADE)
+	topic		    	= models.ForeignKey(Topic, related_name='vocabularys', on_delete=models.CASCADE)
 	note_source			= models.TextField(default='', blank=True, null=True)
 	langguage_source	= models.CharField(max_length=80, blank=True, null=True)
 	note_meaning		= models.TextField(default='', blank=True, null=True)

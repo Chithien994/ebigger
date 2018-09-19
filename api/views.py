@@ -78,7 +78,7 @@ class TopicViewSet(viewsets.ModelViewSet):
     authentication_classes = [CustomTokenAuthentication,
                               SessionAuthentication, BasicAuthentication]
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
-    filter_fields = ('user_id',)
+    filter_fields = ('user',)
     ordering_fields = '__all__'
 
 
@@ -89,7 +89,7 @@ class VocabularyViewSet(viewsets.ModelViewSet):
     authentication_classes = [CustomTokenAuthentication,
                               SessionAuthentication, BasicAuthentication]
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
-    filter_fields = ('topic_id',)
+    filter_fields = ('topic',)
     ordering_fields = '__all__'
 
 class FeedbackViewSet(viewsets.ModelViewSet):
@@ -99,7 +99,7 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     authentication_classes = [CustomTokenAuthentication,
                               SessionAuthentication, BasicAuthentication]
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
-    filter_fields = ('user_id',)
+    filter_fields = ('user',)
     ordering_fields = '__all__'
 
 @csrf_exempt

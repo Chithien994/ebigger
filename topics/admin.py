@@ -9,7 +9,7 @@ class TopicAdmin(admin.ModelAdmin):
 	search_fields = ['name']
 
 	def number_vocabulary(self, obj):
-		return Vocabulary.objects.filter(topic_id=obj.pk).count()
+		return Vocabulary.objects.filter(topic=obj).count()
 
 class VocabularyAdmin(admin.ModelAdmin):
 	"""docstring for VocabularyAdmin"""
