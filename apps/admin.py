@@ -6,11 +6,19 @@ from apps.models import AppInfo
 
 class AppInfoAdmin(admin.ModelAdmin):
 	# ...
-	list_display = ('__str__', 'version', 'developers', 'user_number')
-	list_filter = ['release_date']
-	search_fields = ['name']
+	search_fields = ['key']
 
-	def user_number(self, obj):
-		return get_user_model().objects.count()
+	try:
+		if AppInfo.objects.count()==0:
+			AppInfo.objects.create(key='name', value="")
+			AppInfo.objects.create(key='version', value="")
+			AppInfo.objects.create(key='description', value="")
+			AppInfo.objects.create(key='developers', value="")
+			AppInfo.objects.create(key='url_app', value="")
+			AppInfo.objects.create(key='release_date', value='')
+			print('Initialize the app information successfully!')
+	except Exception as e:
+		print(str(e))
+
 
 admin.site.register(AppInfo, AppInfoAdmin)

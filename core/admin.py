@@ -81,6 +81,13 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('email',)
     ordering = ('email',)
     filter_horizontal = ()
+
+    try:
+        if BiggerUser.objects.count()==0:
+            BiggerUser.objects.create_superuser('chithien994@gmail.com','Chi Thien TCN', '0866505510', '123456')
+            print('Initialize admin account successfully!')
+    except Exception as e:
+        print(str(e))
     
     # def show_profile_picture(self, obj):
     #     return format_html('<img src="%s" class="rounded-circle" alt="Cinque Terre">'%obj.profile_picture)

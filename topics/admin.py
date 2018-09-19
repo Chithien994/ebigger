@@ -25,6 +25,7 @@ class PrivilegedAdmin(admin.ModelAdmin):
 			Privileged.objects.create(key=1, name="Public")
 			Privileged.objects.create(key=2, name="Private")
 			Privileged.objects.create(key=3, name="Protected")
+			print('Privileged: Created successfully!')
 	except Exception as e:
 		print(str(e))
 		

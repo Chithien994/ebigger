@@ -18,4 +18,5 @@ urlpatterns = [
      url(r'v1/login/', v1.login, name='login'),
      url(r'v1/forgotpassword/', v1.forgotpassword, name='forgotpassword'),
      url(r'v1/changepassword/', v1.changepassword, name='changepassword'),
+     url(r'v1/appinfo/', v1.check_app_info, name='check_app_info')
 ]

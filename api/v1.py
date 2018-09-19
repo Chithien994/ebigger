@@ -18,6 +18,7 @@ from core.enums import ValidationStatusCode
 from core.constants import VALIDATION_CODE
 from core.utils import get_site_url, is_email, is_mobile, \
     send_email, validate_user_data
+from apps.models import AppInfo
 
 User = get_user_model()
 
@@ -147,5 +148,18 @@ def changepassword(request):
                             content_type='application/json',
                             status=200)
     return HttpResponse(json.dumps({'code': code, 'message': message}),
+                        content_type='application/json',
+                        status=200)
+
+@api_view(['GET'])
+@csrf_exempt
+def check_app_info(request):
+    """
+    check_app_info
+    """
+    appinfo_list = {}
+    for appinfo in AppInfo.objects.all():
+        appinfo_list[appinfo.key] = appinfo.value
+    return HttpResponse(json.dumps(appinfo_list),
                         content_type='application/json',
                         status=200)

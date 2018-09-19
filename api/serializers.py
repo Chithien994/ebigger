@@ -6,6 +6,7 @@ from core.constants import VALIDATION_CODE
 from core.enums import ValidationStatusCode
 from topics.models import Topic, Vocabulary
 from customers.models import Feedback
+from apps.models import AppInfo
 
 
 User = get_user_model()
@@ -69,3 +70,8 @@ class FeedbackSerializer(serializers.ModelSerializer):
 	class Meta:
 		model 	= Feedback
 		fields 	= '__all__'
+
+class AppInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model   = AppInfo
+        fields  = '__all__'
