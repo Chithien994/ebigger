@@ -35,17 +35,17 @@
 						  					<option value="0932436554">Mì</option>
 										</select>
 										<button type="submit" class="button" title="Run the selected action" name="index" value="0">Send</button>
+										<span class="action-counter" style="display: inline;">{{ message }}</span>
 							        </div>
 							    </div>
 							    <div class="form-row field-value">
 							        <div>
 							            <label for="id_value">Content:</label>
-							            <textarea name="message" cols="40" rows="10" class="vLargeTextField" id="id_value"></textarea>
+							            <textarea name="message" cols="40" rows="10" class="vLargeTextField" id="id_value" required></textarea>
 							        </div>
 							    </div>  
 							</fieldset>
-			        		</div>
-						<p class="paginator"> {{ code }} {{ message }}</p>
+			        	</div>
 		      		</form>
 		    	</div>
 		  	</div>

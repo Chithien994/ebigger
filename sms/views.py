@@ -19,7 +19,10 @@ class IndexView(generic.ListView):
 def send(request):
 	phone_number = request.POST.get('phone_number','')
 	message = request.POST.get('message','')
-	context = {'code':200,'message':'Send a message successfully!'}
-	if not twilioSMS(phone_number, message):
-		context = {'code':400,'message':'Account not enough money!'}
+	context = {'code':400,'message':'Please enter the content!'}
+	if message:
+		context = {'code':200,'message':'Send a message successfully!'}
+		if not twilioSMS(phone_number, message):
+			context = {'code':400,'message':'Account not enough money!'}
+	
 	return render(request, 'sms/index.html', context)
