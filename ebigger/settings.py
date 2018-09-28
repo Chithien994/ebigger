@@ -68,11 +68,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 #     'itbigger.ga'
 # )
 
-AUTHENTICATION_BACKENDS = (
-    'django_facebook.auth_backends.FacebookBackend',
-    'django.contrib.auth.backends.ModelBackend',
-)
-
 # Application definition
 
 INSTALLED_APPS = [
