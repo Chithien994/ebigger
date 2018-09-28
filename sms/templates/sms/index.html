@@ -1,0 +1,56 @@
+{% extends 'sms/base.html' %} {% block title %}Message{% endblock title %} {% block content %}
+<body class=" app-sms model-question change-list">
+<!-- Container -->
+	<div id="container">
+	    <!-- Header -->
+	    <div id="header">
+		        <div id="branding">
+		        	<h1 id="site-name"><a href="/message/">SMS</a></h1>
+		        </div>
+	        <div id="user-tools">Welcome,
+	            <strong>You</strong>.
+	            <a href="/">View site</a> /
+	        </div>
+	    </div>
+	    <!-- END Header -->
+		<div class="breadcrumbs">
+			<a href="/message/">SMS</a>
+			› Message
+		</div>
+		<div id="content" class="flex">
+		    <h1>Select the person who wants to send the message</h1>
+		  	<div id="content-main">
+		    	<div class="module" id="changelist">
+		      		<form action="{% url 'sms:send' %}" id="changelist-form" method="post" novalidate="">
+		      			{% csrf_token %}
+		      			<div class="actions">
+		    				<fieldset class="module aligned ">
+							    <div class="form-row field-key">      
+							        <div>
+							            <label class="required" for="id_key">Contact:</label>
+							            <select name="phone_number" required="">
+						  					<option value="0986424964" selected="">Cương</option>
+						  					<option value="0388995929">Thi</option>
+						  					<option value="0866505510">Thiện</option>
+						  					<option value="0932436554">Mì</option>
+										</select>
+										<button type="submit" class="button" title="Run the selected action" name="index" value="0">Send</button>
+							        </div>
+							    </div>
+							    <div class="form-row field-value">
+							        <div>
+							            <label for="id_value">Content:</label>
+							            <textarea name="message" cols="40" rows="10" class="vLargeTextField" id="id_value"></textarea>
+							        </div>
+							    </div>  
+							</fieldset>
+			        		</div>
+						<p class="paginator"> {{ code }} {{ message }}</p>
+		      		</form>
+		    	</div>
+		  	</div>
+		    <br class="clear">
+		</div>
+	</div>
+</body>
+{% endblock %}

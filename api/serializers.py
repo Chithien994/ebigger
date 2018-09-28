@@ -2,8 +2,8 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
-from core.constants import VALIDATION_CODE
-from core.enums import ValidationStatusCode
+from core.constants import MESSAGES
+from core.enums import StatusCode
 from topics.models import Topic, Vocabulary
 from customers.models import Feedback
 from apps.models import AppInfo
@@ -20,23 +20,27 @@ class UserSerializer(serializers.ModelSerializer):
         exclude = ('password', 'last_login', 'created', 'modified', 'is_active', 'is_admin')
 
     def to_internal_value(self, data):
-        full_name = data.get('full_name')
+        first_name = data.get('first_name')
+        last_name = data.get('last_name')
         email = data.get('email')
         phone_number = data.get('phone_number')
         if data.get('is_admin'):
             data['is_admin'] = False
         if data.get('password'):
             raise serializers.ValidationError(
-                {'message': VALIDATION_CODE[ValidationStatusCode.NEW_PASSWORD_IS_INVALID], 'code': ValidationStatusCode.NEW_PASSWORD_IS_INVALID.value})
+                {'message': MESSAGES[StatusCode.NEW_PASSWORD_IS_INVALID], 'code': StatusCode.NEW_PASSWORD_IS_INVALID.value})
         if not phone_number:
             raise serializers.ValidationError(
-                {'message': VALIDATION_CODE[ValidationStatusCode.PHONE_NUMBER_IS_INVALID], 'code': ValidationStatusCode.PHONE_NUMBER_IS_INVALID.value})
-        if not full_name:
+                {'message': MESSAGES[StatusCode.PHONE_NUMBER_IS_INVALID], 'code': StatusCode.PHONE_NUMBER_IS_INVALID.value})
+        if not first_name:
             raise serializers.ValidationError(
-                {'message': VALIDATION_CODE[ValidationStatusCode.FULL_NAME_IS_EMPTY], 'code': ValidationStatusCode.FULL_NAME_IS_EMPTY.value})
+                {'message': MESSAGES[StatusCode.FIRST_NAME_IS_EMPTY], 'code': StatusCode.FIRST_NAME_IS_EMPTY.value})
+        if not last_name:
+            raise serializers.ValidationError(
+                {'message': MESSAGES[StatusCode.LAST_NAME_IS_EMPTY], 'code': StatusCode.LAST_NAME_IS_EMPTY.value})
         elif not email:
             raise serializers.ValidationError(
-                {'message': VALIDATION_CODE[ValidationStatusCode.EMAIL_ADDRESS_IS_EMPTY], 'code': ValidationStatusCode.EMAIL_ADDRESS_IS_EMPTY.value})
+                {'message': MESSAGES[StatusCode.EMAIL_ADDRESS_IS_EMPTY], 'code': StatusCode.EMAIL_ADDRESS_IS_EMPTY.value})
         data['email'] = email
         return data
 

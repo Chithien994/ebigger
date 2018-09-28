@@ -12,6 +12,7 @@ from django.dispatch.dispatcher import receiver
 from rest_framework.authtoken.models import Token
 
 
+
 def get_file_path(instance, filename):
     """
     :param instance:
@@ -60,38 +61,65 @@ class DateTimeModel(models.Model):
 
 @python_2_unicode_compatible
 class BiggerUserManager(BaseUserManager):
-    def create_user(self, email, full_name, phone_number, password=None):
+    def create_user(self, email, first_name, last_name, phone_number, password=None):
         """
         Creates and saves a User with the given email, date of
         birth and password.
         """
         if not email:
-            raise ValueError('Users must have an email address')
+        	raise ValueError('Users must have an email address')
 
         user = self.model(
-            email       = self.normalize_email(email),
-            full_name   = full_name,
-            phone_number=phone_number,
+        	email       = self.normalize_email(email),
+        	first_name  = first_name,
+        	last_name	= last_name,
+        	phone_number=phone_number,
         )
-
         user.set_password(password)
         user.save(using =self._db)
         return user
 
-    def create_superuser(self, email, full_name, phone_number, password):
+    def create_superuser(self, email, first_name, last_name, phone_number, password):
         """
         Creates and saves a superuser with the given email, phone_number and password.
         """
         user = self.create_user(
-            email,
-            password    = password,
-            full_name   = full_name,
-            phone_number=phone_number,
+        	email,
+        	password    = password,
+        	first_name  = first_name,
+        	last_name	= last_name,
+        	phone_number=phone_number,
         )
         user.is_admin   = True
         user.save(using =self._db)
+        from verification.models import EmailManager, PhoneManager
+        emailManager = EmailManager.objects.create(user=user,email=email,verified=True)
+        phoneManager = PhoneManager.objects.create(user=user,phone_number=phone_number,verified=True)
         return user
 
+    def create_user_with_facebok(selfs, email, first_name, last_name, birthday, gender, address, facebook_id, facebook_token):
+
+        verified = True
+        if not email:
+            email = '%s@facebook.com'%(facebook_id)
+            verified = False
+
+        user = self.model(
+            email       	= self.normalize_email(email),
+            first_name  	= first_name,
+            last_name		= last_name,
+            birthday 		= birthday,
+            gender 			= gender,
+            address 		= address,
+            facebook_id 	= facebook_id,
+            facebook_token 	= facebook_token,
+        )
+
+        user.set_password(facebook_token)
+        user.save(using =self._db)
+        from verification.models import EmailManager
+        email = EmailManager.objects.create(user=user,email=email,verified=verified)
+        return user
 
 class BiggerUser(DateTimeModel, AbstractBaseUser):
     GENDER_CHOICES = (
@@ -103,12 +131,13 @@ class BiggerUser(DateTimeModel, AbstractBaseUser):
     # Permissions
     is_admin 		= models.BooleanField(default=False)
     # Personal info
-    email 			= models.EmailField(max_length=255,unique=True)
-    full_name 		= models.CharField(max_length=80, blank=True, null=True)
+    email 			= models.EmailField(max_length=80, unique=True)
+    first_name 		= models.CharField(max_length=60, blank=True, null=True)
+    last_name 		= models.CharField(max_length=60, blank=True, null=True)
     gender 			= models.CharField(max_length=6, choices=GENDER_CHOICES, default='other')
     birthday 		= models.DateField(_('Birthday'), editable=True, blank=True, null=True)
     profile_picture = models.ImageField(upload_to=photo_upload_to, max_length=255, null=True, blank=True, default='default/avatar-default.jpg')
-    phone_number 	= models.CharField(max_length=20, unique=True)
+    phone_number 	= models.CharField(max_length=20, blank=True, null=True)
     company_name 	= models.CharField(null=True, blank=True, max_length=200, default='')
     address 		= models.CharField(null=True, blank=True, max_length=300, default='')
     state 			= models.CharField(null=True, blank=True, max_length=100, default='')
@@ -120,14 +149,15 @@ class BiggerUser(DateTimeModel, AbstractBaseUser):
     facebook_id 	= models.CharField(max_length=50, blank=True, null=True)
     facebook_token 	= models.CharField(max_length=250, blank=True, null=True)
 
+
     directory_string_var = ''
     objects 		= BiggerUserManager()
 
-    USERNAME_FIELD 	= 'phone_number'
-    REQUIRED_FIELDS = ['email', 'full_name']
+    USERNAME_FIELD 	= 'email'
+    REQUIRED_FIELDS = ['phone_number', 'first_name']
 
     def __str__(self):
-        return '%s - %s - %s' % (self.email, self.full_name, self.phone_number)
+        return '%s - %s - %s' % (self.email, self.first_name, self.phone_number)
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
@@ -157,7 +187,7 @@ class BiggerUser(DateTimeModel, AbstractBaseUser):
 
     def delete(self, *args, **kwargs):
         try:
-            if 'default' not in str(self.picture):
+            if 'default' not in str(self.profile_picture):
                 self.profile_picture.delete()
         except:
             pass
@@ -165,6 +195,7 @@ class BiggerUser(DateTimeModel, AbstractBaseUser):
 
     class Meta:
         db_table = 'users'
+        verbose_name_plural = 'Bigger Users'
 
 
 @receiver(models.signals.post_save, sender=BiggerUser)
@@ -188,7 +219,7 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
     except BiggerUser.DoesNotExist:
         return False
     new_profile_picture = instance.profile_picture
-    if not old_profile_picture == new_profile_picture and 'default' not in str(self.picture):
+    if not old_profile_picture == new_profile_picture and 'default' not in str(instance.profile_picture):
         try:
             old_profile_picture.delete(save=False)
         except:

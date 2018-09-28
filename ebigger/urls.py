@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 
 from rest_framework_swagger.views import get_swagger_view
 
-from api.views import reset_password, oauth2callback
+from api.views import reset_password, verify_email, oauth2callback
 from appview.views import home
 
 schema_view = get_swagger_view(title='EnglishBigger API')
@@ -30,9 +30,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('docs/', schema_view),
+    path('message/', include('sms.urls')),
     url(r'^$', home, name='home'),
     url(r'^reset_password/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
                 reset_password, name='resetpassword'),
+    url(r'^verifyemail/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+                verify_email, name='verifyemail'),
     url(r'^oauth2callback$', oauth2callback, name='oauth2callback'),
-    url(r'^api-auth/', include('rest_framework.urls'))
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

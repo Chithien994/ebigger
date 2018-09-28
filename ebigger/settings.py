@@ -20,6 +20,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
+#facebook app
+# : Your facebook app id
+FACEBOOK_APP_ID = '109163919789581'
+# : Your facebook app secret
+FACEBOOK_APP_SECRET = '7c64fb3bf15ad798738d021aea60d6e6'
+#end facebook app
+
 # Name of the directory for the project.
 PROJECT_DIRNAME = PROJECT_ROOT.split(os.sep)[-1]
 PROJECT_PATH = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
@@ -61,6 +68,11 @@ CORS_ORIGIN_ALLOW_ALL = True
 #     'itbigger.ga'
 # )
 
+AUTHENTICATION_BACKENDS = (
+    'django_facebook.auth_backends.FacebookBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -80,6 +92,8 @@ INSTALLED_APPS = [
     'topics',
     'customers',
     'apps',
+    'verification',
+    'sms',
 ]
 
 MIDDLEWARE = [
@@ -122,26 +136,26 @@ SITE_ID = 1
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('RDS_DB_NAME', 'itbigger$itbigger'),
-        'USER': os.environ.get('RDS_USERNAME', 'itbigger'),
-        'PASSWORD': os.environ.get('RDS_PASSWORD', 'Bigger@994'),
-        'HOST': os.environ.get('RDS_HOSTNAME', 'itbigger.mysql.pythonanywhere-services.com'),
-        'PORT': '3306',
-    }
-}
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': os.environ.get('RDS_DB_NAME', 'ebigger'),
-#         'USER': os.environ.get('RDS_USERNAME', 'root'),
-#         'PASSWORD': os.environ.get('RDS_PASSWORD', '123456'),
-#         'HOST': os.environ.get('RDS_HOSTNAME', 'localhost'),
+#         'NAME': os.environ.get('RDS_DB_NAME', 'itbigger$itbigger'),
+#         'USER': os.environ.get('RDS_USERNAME', 'itbigger'),
+#         'PASSWORD': os.environ.get('RDS_PASSWORD', 'Bigger@994'),
+#         'HOST': os.environ.get('RDS_HOSTNAME', 'itbigger.mysql.pythonanywhere-services.com'),
 #         'PORT': '3306',
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('RDS_DB_NAME', 'ebigger'),
+        'USER': os.environ.get('RDS_USERNAME', 'root'),
+        'PASSWORD': os.environ.get('RDS_PASSWORD', '123456'),
+        'HOST': os.environ.get('RDS_HOSTNAME', 'localhost'),
+        'PORT': '3306',
+    }
+}
 
 
 # Password validation
@@ -207,6 +221,11 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'core.utils.custom_exception_handler',
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
     ),
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
@@ -244,3 +263,7 @@ if PRODUCTION:
     }
 
 CLIENT_SECRET = os.path.join(BASE_DIR, 'client_secret.json')
+
+TWILIO_ACCOUNT_SID = 'ACfd3413596ee0366617b0629f772bdeca'
+TWILIO_AUTH_TOKEN = '341f8453d9df503b6a5334f7a2f074b1'
+TWILIO_FROM_NUMBER = '+18647321566'

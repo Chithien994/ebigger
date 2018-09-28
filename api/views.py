@@ -20,6 +20,7 @@ from core.utils import get_site_url
 from api.serializers import UserSerializer, TopicSerializer, VocabularySerializer, FeedbackSerializer
 from topics.models import Topic, Vocabulary
 from customers.models import Feedback
+from verification.models import EmailManager
 
 User = get_user_model()
 
@@ -71,6 +72,22 @@ def reset_password(request, uidb64, token):
 
     return render(request, 'frontend/reset_password.html',
                   {'uidb64': uidb64, 'token': token, 'msg': msg, 'password_change_form': password_change_form})
+
+def verify_email(request, uidb64, token):
+    user_id = urlsafe_base64_decode(uidb64)
+    user    = User.objects.get(pk=user_id)
+    msg     = ''
+    if not user:
+        return render(request, 'frontend/email/verify_email_invalid.html', {})
+    math = default_token_generator.check_token(user, token)
+    if not math:
+        return render(request, 'frontend/email/verify_email_invalid.html', {})
+    email = EmailManager.objects.get(user=user)
+    if email.verified:
+        return render(request, 'frontend/email/verify_email_invalid.html', {})
+    email.verified = True
+    email.save()
+    return render(request, 'frontend/email/verify_email_successfully.html', {})
 
 class TopicViewSet(viewsets.ModelViewSet):
     queryset                = Topic.objects.all()

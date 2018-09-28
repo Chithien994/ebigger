@@ -1,20 +1,32 @@
 #coding: utf-8
 import datetime
 import re
+import json
 from datetime import timedelta
 
 import httplib2
 import oauth2client
 from apiclient import discovery
+
+from django.http import HttpResponse
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.template.loader import get_template
 from rest_framework.views import exception_handler
 
-from core.constants import VALIDATION_CODE
-from core.enums import ValidationStatusCode
+from core.constants import MESSAGES
+from core.enums import StatusCode
 from django.core.mail import EmailMultiAlternatives
 
+def iHttpResponse(code, message):
+    return HttpResponse(json.dumps({'code': code, 'message': message}),
+                        content_type='application/json',
+                                status=200)
+
+def objectResponse(objects):
+    return HttpResponse(json.dumps(objects),
+                    content_type='application/json',
+                            status=200)
 
 def custom_exception_handler(exc, context):
     # Call REST framework's default exception handler first,
@@ -23,8 +35,8 @@ def custom_exception_handler(exc, context):
 
     # Now add the HTTP status code to the response.
     if response is not None and 'code' in response.data:
-        status_code = ValidationStatusCode(int(response.data['code']))
-        response.data['message'] = VALIDATION_CODE[status_code]
+        status_code = StatusCode(int(response.data['code']))
+        response.data['message'] = MESSAGES[status_code]
 
     return response
 
@@ -42,26 +54,30 @@ def is_email(string):
 
 
 def validate_user_data(data):
-    email = data.get('email')
-    password = data.get('password')
-    phone_number = data.get('phone_number')
-    full_name = data.get('full_name')
-    code, message = None, None
+    email           = data.get('email')
+    password        = data.get('password')
+    phone_number    = data.get('phone_number')
+    first_name      = data.get('first_name')
+    last_name       = data.get('last_name')
+    code, message   = None, None
     if not phone_number:
-        code = ValidationStatusCode.PHONE_NUMBER_IS_INVALID.value
-        message = VALIDATION_CODE[ValidationStatusCode.PHONE_NUMBER_IS_INVALID]
+        code    = StatusCode.PHONE_NUMBER_IS_INVALID.value
+        message = MESSAGES[StatusCode.PHONE_NUMBER_IS_INVALID]
     elif not password:
-        code = ValidationStatusCode.PASSWORD_IS_INVALID.value
-        message = VALIDATION_CODE[ValidationStatusCode.PASSWORD_IS_INVALID]
+        code    = StatusCode.PASSWORD_IS_INVALID.value
+        message = MESSAGES[StatusCode.PASSWORD_IS_INVALID]
     elif not email:
-        code = ValidationStatusCode.EMAIL_ADDRESS_IS_EMPTY.value
-        message = VALIDATION_CODE[ValidationStatusCode.EMAIL_ADDRESS_IS_EMPTY]
+        code    = StatusCode.EMAIL_ADDRESS_IS_EMPTY.value
+        message = MESSAGES[StatusCode.EMAIL_ADDRESS_IS_EMPTY]
     elif email and not is_email(email):
-        code = ValidationStatusCode.EMAIL_ADDRESS_IS_INVALID.value
-        message = VALIDATION_CODE[ValidationStatusCode.EMAIL_ADDRESS_IS_INVALID]
-    elif not full_name:
-        code = ValidationStatusCode.FULL_NAME_IS_EMPTY.value
-        message = VALIDATION_CODE[ValidationStatusCode.FULL_NAME_IS_EMPTY]
+        code    = StatusCode.EMAIL_ADDRESS_IS_INVALID.value
+        message = MESSAGES[StatusCode.EMAIL_ADDRESS_IS_INVALID]
+    elif not first_name:
+        code    = StatusCode.FIRST_NAME_IS_EMPTY.value
+        message = MESSAGES[StatusCode.FIRST_NAME_IS_EMPTY]
+    elif not last_name:
+        code    = StatusCode.LAST_NAME_IS_EMPTY.value
+        message = MESSAGES[StatusCode.LAST_NAME_IS_EMPTY]
     return code, message
 
 
