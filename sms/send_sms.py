@@ -47,10 +47,10 @@ def twilioSMS(phone_number, message):
                     to=str('+84%s'%(phone_number)),
                     from_=settings.TWILIO_FROM_NUMBER
                 )
-                return True, e
+                return True, er
             except Exception as e:
                 er=e
                 print(e)
         else:
             print('Twilio credentials are not set')
-    return False, e
+    return False, er
