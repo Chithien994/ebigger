@@ -11,13 +11,25 @@ from django.conf import settings
 from twilio.rest import Client, TwilioRestClient
 from twilio.http.http_client import TwilioHttpClient
 
-def nexmoSMS(self):
+def nexmoSMS(phone_number, message):
     url         = 'https://api.nexmo.com/verify/json'
-    data        = '{"api_key":"fb8ada56","api_secret":"3JmzdT0FWmTgjQl3","number":"+84866505510","brand":"EnglishBigger VerifyTest"}'
-    headers     = {"Content-Type" : "application/json", "api-key" : "fb8ada56"}
-    response    = requests.post(url, data=json.dumps(data),headers=headers)
+    data        = {"api_key":"fb8ada56","api_secret":"3JmzdT0FWmTgjQl3","number":"+84%s"%phone_number,"brand":message}
+    response    = requests.post(url, data=data)
+    response.headers['content-type']
+    response.encoding
     print('response: %s'%str(response.json))
-    if '200' in str(response.json):
+    if 200 == response.status_code:
+        return True
+    return False
+
+def sendCode(phone_number, message):
+    url         = 'https://api.authy.com/protected/json/phones/verification/start'
+    data        = {"api_key":"kZgT2j8Q9f4p4Erv9hLKqcjo5lnOcgb6","via":"sms","phone_number":phone_number,"country_code":"84"}
+    response    = requests.post(url, data=data)
+    response.headers['content-type']
+    response.encoding
+    print('response: %s'%str(response.json))
+    if 200 == response.status_code:
         return True
     return False
 
@@ -25,14 +37,15 @@ def telesignSMS(self):
     if sys.version[0]=="3": raw_input=input
     customer_id     = "8E97966D-878D-42A5-A863-12004F58C35F"
     api_key         = "Q8dFhf23Js9XcxYSwfALvylu9fWA5C6KpVE4PvPhW61yW+WngguxhfphvsyRS9efo1ofGfXzuiruUq9ExwLE8g=="
-
     phone_number    = "84866505510"
     message         = "Your EnglishBigger verification code is %s"%(self.pin)
     message_type    = "OTP"
 
     response        = MessagingClient(customer_id, api_key).message(phone_number, message, message_type)
+    response.headers['content-type']
+    response.encoding
     print('response: %s'%str(response.json))
-    if '290' in str(response.json):
+    if 209 == response.status_code:
         return True
     return False
 

@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views import generic
 from rest_framework.views import csrf_exempt
 from django.contrib.auth import get_user_model
-from sms.send_sms import twilioSMS
+from sms.send_sms import twilioSMS, sendCode, nexmoSMS
 
 
 from django.template.loader import get_template
@@ -22,8 +22,8 @@ def send(request):
 	context = {'code':400,'message':'Please enter the content!'}
 	if message:
 		context = {'code':200,'message':'Send a message successfully!'}
-		cf, msg = twilioSMS(phone_number, message)
+		cf= nexmoSMS(phone_number, message)
 		if not cf:
-			context = {'code':400,'message':msg}
+			context = {'code':400,'message':'Account not enough money!'}
 	
 	return render(request, 'sms/index.html', context)

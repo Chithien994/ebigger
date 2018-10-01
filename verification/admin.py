@@ -12,7 +12,7 @@ class EmailAdmin(admin.ModelAdmin):
 
 class PhoneAdmin(admin.ModelAdmin):
 	"""docstring for EmailAdmin"""
-	list_display = ('__str__', 'username', 'sent' ,'verified')
+	list_display = ('__str__', 'username', 'verified')
 	list_filter = ['verified']
 	search_fields = ['phone_number']
 

@@ -22,7 +22,8 @@ from core.utils import get_site_url, is_email, is_mobile, \
     send_email, validate_user_data, iHttpResponse, objectResponse
 from apps.models import AppInfo
 from verification.views import send_sms_verification, send_email_verification
-from verification.models import EmailManager
+from verification.models import EmailManager, PhoneManager
+from verification.verification import checkCode
 
 User = get_user_model()
 
@@ -32,8 +33,18 @@ def userResponse(user):
 @api_view(['POST'])
 @csrf_exempt
 @permission_classes((permissions.AllowAny,))
-def confirm_sms_verification():
-    return iHttpResponse('200','Successfully')
+def confirm_sms_verification(request):
+    phone_number    = request.data.get('phone_number')
+    code            = request.data.get('code')
+    if phone_number:
+        if checkCode(phone_number, code):
+            phoneManager = PhoneManager.objects.filter(phone_number=phone_number).first()
+            if phoneManager:
+                phoneManager.verified = True
+                phoneManager.save()
+                user = User.objects.filter(phone_number=phone_number).first()
+                return userResponse(user)
+    return iHttpResponse('401','Failure')
 
 @api_view(['POST'])
 @csrf_exempt
@@ -44,21 +55,33 @@ def signup(request):
     """
     email           = request.data.get('email')
     password        = request.data.get('password')
+    country_code    = request.data.get('country_code')
     phone_number    = request.data.get('phone_number')
     first_name      = request.data.get('first_name')
     last_name       = request.data.get('last_name')
     code, message   = validate_user_data(request.data)
     if code and message:
     	return iHttpResponse(code, message)
-    user = User.objects.get(email=email)
-    if user and Manager.objects.get(user=user).verified:
+    user = User.objects.filter(email=email).first()
+    if user and EmailManager.objects.filter(user_id=user).exists() and EmailManager.objects.filter(user_id=user).first().verified:
     	return iHttpResponse(StatusCode.EMAIL_ADDRESS_IS_EXISTS.value,
             MESSAGES[StatusCode.EMAIL_ADDRESS_IS_EXISTS])
 
-    if not User.objects.filter(phone_number=phone_number).exists():
+    user = User.objects.filter(phone_number=phone_number).first()
+    if not user:
         user = User.objects.create_user(email, first_name, last_name, phone_number, password)
-        send_sms_verification(user,phone_number)
-        return send_email_verification(user,email)
+        send_email_verification(user,email)
+        return send_sms_verification(user,country_code,phone_number)
+    phoneManager = PhoneManager.objects.filter(user_id=user).first()
+    if not phoneManager.verified:
+        user.email = email
+        user.first_name = first_name;
+        user.last_name = last_name
+        user.set_password(password)
+        user.save()
+        send_email_verification(user,email)
+        return send_sms_verification(user,country_code,phone_number)
+
 
     return iHttpResponse(400, 'This phone number already exists in our system')
 
@@ -222,3 +245,15 @@ def check_app_info(request):
     for appinfo in AppInfo.objects.all():
         appinfo_list[appinfo.key] = appinfo.value
     return objectResponse(appinfo_list)
+
+@api_view(['GET'])
+@csrf_exempt
+@permission_classes((permissions.AllowAny,))
+def setting(request):
+    """
+    check app info
+    """
+    setting_list = {}
+    for setting in Setting.objects.all():
+        setting_list[setting.key] = setting.value
+    return objectResponse(setting_list)
