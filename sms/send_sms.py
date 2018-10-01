@@ -3,11 +3,13 @@ from __future__ import print_function
 import requests
 import json
 import sys
+import os
 from telesign.messaging import MessagingClient
 from telesign.util import random_with_n_digits
 from telesign.rest import RestClient
 from django.conf import settings
 from twilio.rest import Client, TwilioRestClient
+from twilio.http.http_client import TwilioHttpClient
 
 def nexmoSMS(self):
     url         = 'https://api.nexmo.com/verify/json'
@@ -41,7 +43,9 @@ def twilioSMS(phone_number, message):
     if phone_number:
         if all([settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN, settings.TWILIO_FROM_NUMBER]):
             try:
-                twilio_client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+                proxy_client = TwilioHttpClient()
+                proxy_client.session.proxies = {'https': os.environ['127.0.0.1:3128'],'http': os.environ['127.0.0.1:3128']}
+                twilio_client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN,http_client=proxy_client)
                 twilio_client.messages.create(
                     body=str(message),
                     to=str('+84%s'%(phone_number)),
