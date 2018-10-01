@@ -44,7 +44,7 @@ def twilioSMS(phone_number, message):
         if all([settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN, settings.TWILIO_FROM_NUMBER]):
             try:
                 proxy_client = TwilioHttpClient()
-                proxy_client.session.proxies = {'https': os.environ['127.0.0.1:3128'],'http': os.environ['127.0.0.1:3128']}
+                proxy_client.session.proxies = {'https://127.0.0.1:3128','http://127.0.0.1:3128','https://127.0.0.1:8000','http://127.0.0.1:8000'}
                 twilio_client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN,http_client=proxy_client)
                 twilio_client.messages.create(
                     body=str(message),
