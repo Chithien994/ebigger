@@ -37,6 +37,7 @@ def telesignSMS(self):
 
 def twilioSMS(phone_number, message):
     print(phone_number,message)
+    er = '';
     if phone_number:
         if all([settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN, settings.TWILIO_FROM_NUMBER]):
             try:
@@ -46,9 +47,10 @@ def twilioSMS(phone_number, message):
                     to=str('+84%s'%(phone_number)),
                     from_=settings.TWILIO_FROM_NUMBER
                 )
-                return True
+                return True, e
             except Exception as e:
+                er=e
                 print(e)
         else:
             print('Twilio credentials are not set')
-    return False
+    return False, e

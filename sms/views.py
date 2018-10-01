@@ -22,7 +22,8 @@ def send(request):
 	context = {'code':400,'message':'Please enter the content!'}
 	if message:
 		context = {'code':200,'message':'Send a message successfully!'}
-		if not twilioSMS(phone_number, message):
-			context = {'code':400,'message':'Account not enough money!'}
+		cf, msg = twilioSMS(phone_number, message)
+		if not cf:
+			context = {'code':400,'message':msg}
 	
 	return render(request, 'sms/index.html', context)
