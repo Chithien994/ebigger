@@ -43,7 +43,7 @@ def twilioSMS(phone_number, message):
                 twilio_client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
                 twilio_client.messages.create(
                     body=str(message),
-                    to=str('[+][84][%s]'%(phone_number)),
+                    to=str('+84%s'%(phone_number)),
                     from_=settings.TWILIO_FROM_NUMBER
                 )
                 return True
