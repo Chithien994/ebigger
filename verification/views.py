@@ -34,29 +34,3 @@ def send_email_verification(user,email, **kwargs):
 		return iHttpResponse(200,'Please check your email for email verification!')
 	return iHttpResponse(StatusCode.EMAIL_ADDRESS_IS_INVALID.value,
 		MESSAGES[StatusCode.EMAIL_ADDRESS_IS_INVALID])
-
-class ResendView(generics.GenericAPIView):
-
-	@api_view(['POST'])
-	@csrf_exempt
-	@permission_classes((permissions.AllowAny,))
-	def resend_or_create(self):
-	    phone = self.request.data.get('phone')
-	    send_new = self.request.data.get('new')
-	    sms_verification = None
-
-	    user = User.objects.filter(phone_number=phone).first()
-
-	    if not send_new:
-	        sms_verification = SMSVerification.objects.filter(user=user, verified=False) \
-	            .order_by('-created_at').first()
-
-	    if sms_verification is None:
-	        sms_verification = PhoneManager.objects.create(user=user, phone=phone)
-
-	    return sms_verification.send_verification()
-
-	def post(self, request, *args, **kwargs):
-	    success = self.resend_or_create()
-
-	    return Response(dict(success=success), status=status.HTTP_200_OK)

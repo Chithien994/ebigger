@@ -10,7 +10,7 @@ class AppInfoAdmin(admin.ModelAdmin):
 
 	try:
 		if AppInfo.objects.count()==0:
-			AppInfo.objects.create(key='name', value="")
+			AppInfo.objects.create(key='name', value="EnglishBigger")
 			AppInfo.objects.create(key='version', value="")
 			AppInfo.objects.create(key='description', value="")
 			AppInfo.objects.create(key='developers', value="")

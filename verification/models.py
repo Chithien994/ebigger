@@ -34,7 +34,7 @@ class EmailManager(models.Model):
 	email 		= models.EmailField(max_length=80, unique=True)
 
 	def __str__(self):
-		return 'Email: %s' % self.user
+		return 'Email: %s' % self.email
 
 	class Meta:
 		db_table = 'email_manager'

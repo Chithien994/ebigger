@@ -13,7 +13,9 @@ from rest_framework import exceptions, filters, viewsets, permissions
 from rest_framework.authentication import BasicAuthentication, \
     SessionAuthentication, TokenAuthentication
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.response import Response
+from rest_framework import generics
 
 from core.forms import ChangePasswordForm
 from core.utils import get_site_url
@@ -24,9 +26,37 @@ from verification.models import EmailManager
 
 User = get_user_model()
 
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    """
+    Object-level permission to only allow owners of an object to edit it.
+    Assumes the model instance has an `owner` attribute.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD or OPTIONS requests.
+        print('BasePermission: ',str(request.method))
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        # Instance must have an attribute named `owner`.
+
+        obj_user_id = None
+        my_user_id =request.user.id
+        try:
+        	obj_user_id = obj.user_id
+        except Exception as e:
+        	obj_user_id = obj.id
+        
+        if obj_user_id == my_user_id:
+        	return True
+
+        user = User.objects.get(pk=my_user_id)
+        if user and user.is_admin:
+        	return True
+        return False
+
 class CustomTokenAuthentication(TokenAuthentication):
     model = Token
-
     def authenticate_credentials(self, key):
         try:
             token = self.model.objects.get(key=key)
@@ -37,16 +67,17 @@ class CustomTokenAuthentication(TokenAuthentication):
             raise exceptions.AuthenticationFailed('User inactive or deleted.')
 
         return (token.user, token)
-
+		
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset                = User.objects.all()
-    serializer_class        = UserSerializer
-    permission_classes      = [IsAuthenticated]
-    authentication_classes  = [CustomTokenAuthentication,
-                              SessionAuthentication, BasicAuthentication]
-    filter_backends         = (filters.OrderingFilter,)
-    ordering_fields         = '__all__'
+	queryset                = User.objects.all()
+	serializer_class        = UserSerializer
+	permission_classes      = [IsOwnerOrReadOnly]
+	authentication_classes  = [CustomTokenAuthentication,
+							SessionAuthentication, BasicAuthentication]
+	filter_backends         = (filters.OrderingFilter,)
+	ordering_fields         = '__all__'
+
 
 def reset_password(request, uidb64, token):
     user_id = urlsafe_base64_decode(uidb64)
@@ -92,7 +123,7 @@ def verify_email(request, uidb64, token):
 class TopicViewSet(viewsets.ModelViewSet):
     queryset                = Topic.objects.all()
     serializer_class        = TopicSerializer
-    permission_classes      = [IsAuthenticated]
+    permission_classes      = [IsOwnerOrReadOnly]
     authentication_classes  = [CustomTokenAuthentication,
                               SessionAuthentication, BasicAuthentication]
     filter_backends         = (DjangoFilterBackend, filters.OrderingFilter)
@@ -103,7 +134,7 @@ class TopicViewSet(viewsets.ModelViewSet):
 class VocabularyViewSet(viewsets.ModelViewSet):
     queryset                = Vocabulary.objects.all()
     serializer_class        = VocabularySerializer
-    permission_classes      = [IsAuthenticated]
+    permission_classes      = [IsOwnerOrReadOnly]
     authentication_classes  = [CustomTokenAuthentication,
                               SessionAuthentication, BasicAuthentication]
     filter_backends         = (DjangoFilterBackend, filters.OrderingFilter)
@@ -113,7 +144,7 @@ class VocabularyViewSet(viewsets.ModelViewSet):
 class FeedbackViewSet(viewsets.ModelViewSet):
     queryset                = Feedback.objects.all()
     serializer_class        = FeedbackSerializer
-    permission_classes      = [IsAuthenticated]
+    permission_classes      = [IsAdminUser]
     authentication_classes  = [CustomTokenAuthentication,
                               SessionAuthentication, BasicAuthentication]
     filter_backends         = (DjangoFilterBackend, filters.OrderingFilter)

@@ -35,79 +35,92 @@ def userResponse(user):
 @permission_classes((permissions.AllowAny,))
 def confirm_sms_verification(request):
     phone_number    = request.data.get('phone_number')
-    code            = request.data.get('code')
+    code            = request.data.get('verify_code')
     if phone_number:
         if checkCode(phone_number, code):
-            phoneManager = PhoneManager.objects.filter(phone_number=phone_number).first()
+            phoneManager = PhoneManager.objects.filter(phone_number=phone_number, verified=False).first()
             if phoneManager:
                 phoneManager.verified = True
                 phoneManager.save()
-                user = User.objects.filter(phone_number=phone_number).first()
+                user = User.objects.filter(pk=phoneManager.user_id).first()
                 return userResponse(user)
     return iHttpResponse('401','Failure')
 
 @api_view(['POST'])
 @csrf_exempt
 @permission_classes((permissions.AllowAny,))
-def signup(request):
-    """
-    Signup new user
-    """
-    email           = request.data.get('email')
-    password        = request.data.get('password')
-    country_code    = request.data.get('country_code')
+def resend_verification_message(request):
     phone_number    = request.data.get('phone_number')
-    first_name      = request.data.get('first_name')
-    last_name       = request.data.get('last_name')
-    code, message   = validate_user_data(request.data)
-    if code and message:
-    	return iHttpResponse(code, message)
-    user = User.objects.filter(email=email).first()
-    if user and EmailManager.objects.filter(user_id=user).exists() and EmailManager.objects.filter(user_id=user).first().verified:
-    	return iHttpResponse(StatusCode.EMAIL_ADDRESS_IS_EXISTS.value,
-            MESSAGES[StatusCode.EMAIL_ADDRESS_IS_EXISTS])
+    phoneManager = PhoneManager.objects.filter(phone_number=phone_number, verified=False).first()
+    if phoneManager:
+        if phoneManager.send_verification():
+            return iHttpResponse(200,'Please check the message, activation code has been sent to your phone number.')
+    return iHttpResponse(400,'Error sending verification message!')
 
-    user = User.objects.filter(phone_number=phone_number).first()
-    if not user:
-        user = User.objects.create_user(email, first_name, last_name, phone_number, password)
-        send_email_verification(user,email)
-        return send_sms_verification(user,country_code,phone_number)
-    phoneManager = PhoneManager.objects.filter(user_id=user).first()
-    if not phoneManager.verified:
-        user.email = email
-        user.first_name = first_name;
-        user.last_name = last_name
-        user.set_password(password)
-        user.save()
-        send_email_verification(user,email)
-        return send_sms_verification(user,country_code,phone_number)
+@api_view(['POST'])
+@csrf_exempt
+@permission_classes((permissions.AllowAny,))
+def signup(request):
+	"""
+	Signup new user
+	"""
+	email           = request.data.get('email')
+	password        = request.data.get('password')
+	country_code    = request.data.get('country_code')
+	phone_number    = request.data.get('phone_number')
+	first_name      = request.data.get('first_name')
+	last_name       = request.data.get('last_name')
+	code, message   = validate_user_data(request.data)
+	if code and message:
+		return iHttpResponse(code, message)
+	emailManager = EmailManager.objects.filter(email=email).first()
+	if emailManager and emailManager.verified:
+		return iHttpResponse(StatusCode.EMAIL_ADDRESS_IS_EXISTS.value,
+		    MESSAGES[StatusCode.EMAIL_ADDRESS_IS_EXISTS])
 
+	phoneManager = PhoneManager.objects.filter(phone_number=phone_number).first()
+	if not phoneManager:
+		user = User.objects.create_user(email, first_name, last_name, phone_number, password)
+		send_email_verification(user,email)
+		return send_sms_verification(user,country_code,phone_number)
 
-    return iHttpResponse(400, 'This phone number already exists in our system')
+	elif not phoneManager.verified:
+		user = User.objects.filter(pk=phoneManager.user_id).first()
+		user.email = email
+		user.phone_number = phone_number
+		user.first_name = first_name
+		user.last_name = last_name
+		user.set_password(password)
+		user.save()
+		send_email_verification(user,email)
+		return send_sms_verification(user,country_code,phone_number)
+
+	return iHttpResponse(400, 'This phone number already exists in our system')
 
 
 @api_view(['POST'])
 @csrf_exempt
 @permission_classes((permissions.AllowAny,))
 def login(request):
-    """
-    Login
-    """
-    username = request.data.get('username')
-    password = request.data.get('password')
+	"""
+	Login
+	"""
+	username = request.data.get('username')
+	password = request.data.get('password')
 
-    user = User.objects.get(email=username)
-    if user and EmailManager.objects.get(user=user).verified:
-    	return check_password(user, password)
+	emailManager = EmailManager.objects.filter(email=username).first()
+	if emailManager and emailManager.verified:
+		return check_password(emailManager.user_id, password)
 
-    if User.objects.filter(phone_number=username).exists():
-    	user = User.objects.get(phone_number=username)
-    	return check_password(user, password)   
+	phoneManager = PhoneManager.objects.filter(phone_number=username).first()
+	if phoneManager and phoneManager.verified:
+		return check_password(phoneManager.user_id, password)   
 
-    return iHttpResponse(StatusCode.USERNAME_IS_INVALID.value,
-    		MESSAGES[StatusCode.USERNAME_IS_INVALID])
+	return iHttpResponse(StatusCode.USERNAME_IS_INVALID.value,
+			MESSAGES[StatusCode.USERNAME_IS_INVALID])
 
-def check_password(user, password):
+def check_password(user_id, password):
+	user = User.objects.get(pk=user_id)
 	if user.check_password(password):
 		return userResponse(user)
 	else:

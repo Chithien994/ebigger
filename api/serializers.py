@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.conf import settings
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
@@ -7,6 +8,7 @@ from core.enums import StatusCode
 from topics.models import Topic, Vocabulary
 from customers.models import Feedback
 from apps.models import AppInfo
+from core.utils import get_site_url
 
 
 User = get_user_model()
@@ -48,6 +50,7 @@ class UserSerializer(serializers.ModelSerializer):
 class NewUserSerializer(serializers.ModelSerializer):
     token = serializers.SerializerMethodField()
     email = serializers.SerializerMethodField()
+    profile_picture = serializers.SerializerMethodField()
 
     def get_token(self, obj):
         token, created = Token.objects.get_or_create(user=obj)
@@ -56,14 +59,17 @@ class NewUserSerializer(serializers.ModelSerializer):
     def get_email(self, obj):
         return obj.email
 
+    def get_profile_picture(self, obj):
+        return '%s%s%s'%(get_site_url(),settings.MEDIA_URL,obj.profile_picture)
+
     class Meta:
         model   = User
         exclude = ('password', 'is_active', 'last_login','created', 'modified', 'is_admin')
             
 class TopicSerializer(serializers.ModelSerializer):
-	class Meta:
-		model 	= Topic
-		fields 	= '__all__'
+    class Meta:
+    	model 	= Topic
+    	fields 	= '__all__'
 
 class VocabularySerializer(serializers.ModelSerializer):
 	class Meta:

@@ -21,4 +21,5 @@ urlpatterns = [
 	url(r'v1/appinfo', v1.check_app_info, name='check_app_info'),
 	url(r'v1/authfacebook', v1.authfacebook, name='authfacebook'),
 	url(r'v1/smsverification', v1.confirm_sms_verification, name='smsverification'),
+	url(r'v1/resendsms', v1.resend_verification_message, name='resendsms'),
 ]
