@@ -27,33 +27,47 @@ from verification.models import EmailManager
 User = get_user_model()
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
-    """
-    Object-level permission to only allow owners of an object to edit it.
-    Assumes the model instance has an `owner` attribute.
-    """
+	"""
+	Object-level permission to only allow owners of an object to edit it.
+	Assumes the model instance has an `owner` attribute.
+	"""
+	def has_object_permission(self, request, view, obj):
+	    # Read permissions are allowed to any request,
+	    # Method GET 1 object, PUT, PATCH, DELETE
+	    if request.method in permissions.SAFE_METHODS:
+	        return True
+	    # Instance must have an attribute named `owner`.
 
-    def has_object_permission(self, request, view, obj):
-        # Read permissions are allowed to any request,
-        # so we'll always allow GET, HEAD or OPTIONS requests.
-        print('BasePermission: ',str(request.method))
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        # Instance must have an attribute named `owner`.
+	    obj_user_id = None
+	    my_user_id =request.user.id
+	    try:
+	    	obj_user_id = obj.user_id
+	    except Exception as e:
+	    	obj_user_id = obj.id
+	    
+	    if obj_user_id == my_user_id:
+	    	return True
 
-        obj_user_id = None
-        my_user_id =request.user.id
-        try:
-        	obj_user_id = obj.user_id
-        except Exception as e:
-        	obj_user_id = obj.id
-        
-        if obj_user_id == my_user_id:
-        	return True
+	    user = User.objects.get(pk=my_user_id)
+	    if user and user.is_admin:
+	    	return True
+	    return False
 
-        user = User.objects.get(pk=my_user_id)
-        if user and user.is_admin:
-        	return True
-        return False
+	def has_permission(self, request, view):
+		# Method GET all, POST
+		if request.method in permissions.SAFE_METHODS:
+			return True
+
+		my_user_id = request.user.id
+		user_id = request.data.get('user','-1')
+		if user_id == my_user_id:
+			return True
+
+		user = User.objects.get(pk=my_user_id)
+		if user and user.is_admin:
+			return True
+
+		return False
 
 class CustomTokenAuthentication(TokenAuthentication):
     model = Token
