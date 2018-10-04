@@ -1,7 +1,5 @@
-import json
 import facebook
 
-from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
@@ -18,7 +16,7 @@ from rest_framework.authtoken.models import Token
 from api.serializers import NewUserSerializer
 from core.enums import StatusCode
 from core.constants import MESSAGES
-from core.utils import get_site_url, is_email, is_mobile, \
+from core.utils import get_site_url, is_email, \
     send_email, validate_user_data, iHttpResponse, objectResponse
 from apps.models import AppInfo
 from verification.views import send_sms_verification, send_email_verification

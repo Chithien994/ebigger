@@ -14,60 +14,16 @@ from rest_framework.authentication import BasicAuthentication, \
     SessionAuthentication, TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.response import Response
-from rest_framework import generics
 
 from core.forms import ChangePasswordForm
 from core.utils import get_site_url
 from api.serializers import UserSerializer, TopicSerializer, VocabularySerializer, FeedbackSerializer
+from api.permissions import IsOwnerOrReadOnly
 from topics.models import Topic, Vocabulary
 from customers.models import Feedback
 from verification.models import EmailManager
 
 User = get_user_model()
-
-class IsOwnerOrReadOnly(permissions.BasePermission):
-	"""
-	Object-level permission to only allow owners of an object to edit it.
-	Assumes the model instance has an `owner` attribute.
-	"""
-	def has_object_permission(self, request, view, obj):
-	    # Read permissions are allowed to any request,
-	    # Method GET 1 object, PUT, PATCH, DELETE
-	    if request.method in permissions.SAFE_METHODS:
-	        return True
-	    # Instance must have an attribute named `owner`.
-
-	    obj_user_id = None
-	    my_user_id =request.user.id
-	    try:
-	    	obj_user_id = obj.user_id
-	    except Exception as e:
-	    	obj_user_id = obj.id
-	    
-	    if obj_user_id == my_user_id:
-	    	return True
-
-	    user = User.objects.get(pk=my_user_id)
-	    if user and user.is_admin:
-	    	return True
-	    return False
-
-	def has_permission(self, request, view):
-		# Method GET all, POST
-		if request.method in permissions.SAFE_METHODS:
-			return True
-
-		my_user_id = request.user.id
-		user_id = request.data.get('user','-1')
-		if user_id == my_user_id:
-			return True
-
-		user = User.objects.get(pk=my_user_id)
-		if user and user.is_admin:
-			return True
-
-		return False
 
 class CustomTokenAuthentication(TokenAuthentication):
     model = Token
@@ -166,7 +122,7 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     ordering_fields         = '__all__'
 
 @csrf_exempt
-@permission_classes((permissions.IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def oauth2callback(request):
     from oauth2client import client
     if not request.user.is_superuser:
