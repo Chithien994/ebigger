@@ -49,13 +49,15 @@ class UserViewSet(viewsets.ModelViewSet):
     ordering_fields         = '__all__'
 
     def get_queryset(self):
-        if not self.request.auth:
-            return None
-        user = self.request.user
-        print(user)
-        if user and user.is_admin:
-            return User.objects.all()
-        return User.objects.filter(pk=user.id)
+        try:
+            user = self.request.user
+            if user.is_admin:
+                return User.objects.all()
+            return User.objects.filter(pk=user.id)
+        except Exception as e:
+            print(e)
+        return User.objects.none()
+        
 
 
 def reset_password(request, uidb64, token):
@@ -110,12 +112,14 @@ class TopicViewSet(viewsets.ModelViewSet):
     ordering_fields         = '__all__'
 
     def get_queryset(self):
-        if not self.request.auth:
-            return None
-        user = self.request.user
-        if user and user.is_admin:
-            return Topic.objects.all()
-        return Topic.objects.filter(user=user)
+        try:
+            user = self.request.user
+            if user.is_admin:
+                return Topic.objects.all()
+            return Topic.objects.filter(user=user)
+        except Exception as e:
+            print(e)
+        return Topic.objects.none()
 
 
 class VocabularyViewSet(viewsets.ModelViewSet):
@@ -129,13 +133,15 @@ class VocabularyViewSet(viewsets.ModelViewSet):
     ordering_fields         = '__all__'
 
     def get_queryset(self):
-        if not self.request.auth:
-            return None
-        user = self.request.user
-        if user and user.is_admin:
-            return Vocabulary.objects.all()
-        topics = Topic.objects.filter(user=user)
-        return Vocabulary.objects.filter(topic__in=topics)
+        try:
+            user = self.request.user
+            if user and user.is_admin:
+                return Vocabulary.objects.all()
+            topics = Topic.objects.filter(user=user)
+            return Vocabulary.objects.filter(topic__in=topics)
+        except Exception as e:
+            print(e)
+        return Vocabulary.objects.none()
 
 class FeedbackViewSet(viewsets.ModelViewSet):
     queryset                = Feedback.objects.all()
