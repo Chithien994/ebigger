@@ -92,9 +92,9 @@ class BiggerUserManager(BaseUserManager):
         )
         user.is_admin   = True
         user.save(using =self._db)
-        # from verification.models import EmailManager, PhoneManager
-        # emailManager = EmailManager.objects.create(user=user,email=email,verified=True)
-        # phoneManager = PhoneManager.objects.create(user=user,phone_number=phone_number,verified=True)
+        from verification.models import EmailManager, PhoneManager
+        emailManager = EmailManager.objects.create(user=user,email=email,verified=True)
+        phoneManager = PhoneManager.objects.create(user=user,phone_number=phone_number,verified=True)
         return user
 
     def create_user_with_facebok(selfs, email, first_name, last_name, birthday, gender, address, facebook_id, facebook_token):
@@ -117,8 +117,8 @@ class BiggerUserManager(BaseUserManager):
 
         user.set_password(facebook_token)
         user.save(using =self._db)
-        # from verification.models import EmailManager
-        # email = EmailManager.objects.create(user=user,email=email,verified=verified)
+        from verification.models import EmailManager
+        email = EmailManager.objects.create(user=user,email=email,verified=verified)
         return user
 
 class BiggerUser(DateTimeModel, AbstractBaseUser):

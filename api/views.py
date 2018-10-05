@@ -40,13 +40,19 @@ class CustomTokenAuthentication(TokenAuthentication):
 		
 
 class UserViewSet(viewsets.ModelViewSet):
-	queryset                = User.objects.all()
-	serializer_class        = UserSerializer
-	permission_classes      = [IsOwnerOrReadOnly]
-	authentication_classes  = [CustomTokenAuthentication,
-							SessionAuthentication, BasicAuthentication]
-	filter_backends         = (filters.OrderingFilter,)
-	ordering_fields         = '__all__'
+    queryset                = User.objects.all()
+    serializer_class        = UserSerializer
+    permission_classes      = [IsOwnerOrReadOnly]
+    authentication_classes  = [CustomTokenAuthentication,
+    						SessionAuthentication, BasicAuthentication]
+    filter_backends         = (filters.OrderingFilter,)
+    ordering_fields         = '__all__'
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_admin:
+            return User.objects.all()
+        return User.objects.filter(pk=user.id)
 
 
 def reset_password(request, uidb64, token):
@@ -100,6 +106,12 @@ class TopicViewSet(viewsets.ModelViewSet):
     filter_fields           = ('user',)
     ordering_fields         = '__all__'
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_admin:
+            return Topic.objects.all()
+        return Topic.objects.filter(user=user)
+
 
 class VocabularyViewSet(viewsets.ModelViewSet):
     queryset                = Vocabulary.objects.all()
@@ -110,6 +122,13 @@ class VocabularyViewSet(viewsets.ModelViewSet):
     filter_backends         = (DjangoFilterBackend, filters.OrderingFilter)
     filter_fields           = ('topic',)
     ordering_fields         = '__all__'
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_admin:
+            return Vocabulary.objects.all()
+        topics = Topic.objects.filter(user=user)
+        return Vocabulary.objects.filter(topic__in=topics)
 
 class FeedbackViewSet(viewsets.ModelViewSet):
     queryset                = Feedback.objects.all()
