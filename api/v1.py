@@ -32,27 +32,39 @@ def userResponse(user):
 @csrf_exempt
 @permission_classes((permissions.AllowAny,))
 def confirm_sms_verification(request):
+    """
+    Phone number verification to complete registration
+    With body: 
+    {
+        "phone_number":"string",
+        "verify_code":"string"
+    }
+    """
     phone_number    = request.data.get('phone_number')
     code            = request.data.get('verify_code')
     if phone_number:
-        if checkCode(phone_number, code):
-            phoneManager = PhoneManager.objects.filter(phone_number=phone_number, verified=False).first()
-            if phoneManager:
-                phoneManager.verified = True
-                phoneManager.save()
-                user = User.objects.filter(pk=phoneManager.user_id).first()
-                return userResponse(user)
+        phoneManager = PhoneManager.objects.filter(phone_number=phone_number, verified=False).first()
+        if phoneManager and checkCode(phoneManager.country_code, phone_number, code):
+            phoneManager.verified = True
+            phoneManager.save()
+            user = User.objects.filter(pk=phoneManager.user_id).first()
+            return userResponse(user)
     return iHttpResponse('401','Failure')
 
 @api_view(['POST'])
 @csrf_exempt
 @permission_classes((permissions.AllowAny,))
 def resend_verification_message(request):
+    """Resend verification message
+    With body: 
+    {
+        "phone_number":"string"
+    }
+    """
     phone_number    = request.data.get('phone_number')
-    phoneManager = PhoneManager.objects.filter(phone_number=phone_number, verified=False).first()
-    if phoneManager:
-        if phoneManager.send_verification():
-            return iHttpResponse(200,'Please check the message, activation code has been sent to your phone number.')
+    phoneManager    = PhoneManager.objects.filter(phone_number=phone_number, verified=False).first()
+    if phoneManager and phoneManager.send_verification():
+        return iHttpResponse(200,'Please check the message, activation code has been sent to your phone number.')
     return iHttpResponse(400,'Error sending verification message!')
 
 @api_view(['POST'])
@@ -61,6 +73,15 @@ def resend_verification_message(request):
 def signup(request):
 	"""
 	Signup new user
+    With body: 
+    {
+        "country_code":"string",
+        "phone_number":"string",
+        "email":"string",
+        "password":"string",
+        "first_name":"string",
+        "last_name":"string"
+    }
 	"""
 	email           = request.data.get('email')
 	password        = request.data.get('password')
@@ -102,6 +123,11 @@ def signup(request):
 def login(request):
 	"""
 	Login
+    With body: 
+    {
+        "phone_number":"string",
+        "password":"string"
+    }
 	"""
 	username = request.data.get('username')
 	password = request.data.get('password')
@@ -131,6 +157,10 @@ def check_password(user_id, password):
 def authfacebook(request):
     """
     Function for login and register with facebook
+    With body: 
+    {
+        "access_token":"string"
+    }
     """
     # data = json.loads(request.body.decode('utf-8'))
     access_token 	= request.data.get('access_token')
@@ -182,6 +212,10 @@ def authfacebook(request):
 def forgotpassword(request):
     """
     forgot password
+    With body: 
+    {
+        "email":"string"
+    }
     """
     print('forgotpassword', settings.EMAIL_HOST_PASSWORD, settings.EMAIL_HOST_USER)
     SITE_URL = get_site_url()
@@ -224,6 +258,11 @@ def forgotpassword(request):
 def changepassword(request):
     """
     change password
+    With body: 
+    {
+        "old_password":"string",
+        "new_password":"string"
+    }
     """
     user = request.user
     old_password = request.data.get('old_password')

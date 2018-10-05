@@ -10,8 +10,8 @@
 
           <form action="" method="POST" id="verifyemailForm">
           {% csrf_token %}
-          {% if password_change_form.errors %}
-            {{ password_change_form.errors }}
+          {% if verify_email_form.errors %}
+            {{ verify_email_form.errors }}
           {% endif %}
           <fieldset>
             <div class="form-group">

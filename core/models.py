@@ -157,7 +157,7 @@ class BiggerUser(DateTimeModel, AbstractBaseUser):
     REQUIRED_FIELDS = ['phone_number', 'first_name']
 
     def __str__(self):
-        return '%s - %s - %s' % (self.email, self.first_name, self.phone_number)
+        return '%s [%s]' % (self.email, self.first_name)
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"

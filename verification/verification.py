@@ -12,7 +12,7 @@ def get_api_key():
 
 def sendCode(country_code, phone_number):
     url         = 'https://api.authy.com/protected/json/phones/verification/start'
-    data        = {"api_key":get_api_key(),"via":"sms","phone_number":phone_number,"country_code":"84"}
+    data        = {"api_key":get_api_key(),"via":"sms","phone_number":phone_number,"country_code":country_code}
     response    = requests.post(url, data=data)
     response.headers['content-type']
     response.encoding
@@ -21,9 +21,9 @@ def sendCode(country_code, phone_number):
         return True
     return False
 
-def checkCode(phone_number,code):
+def checkCode(country_code, phone_number,code):
     url         = 'https://api.authy.com/protected/json/phones/verification/check'
-    data        = {"api_key":get_api_key(),"verification_code":code,"phone_number":phone_number,"country_code":"84"}
+    data        = {"api_key":get_api_key(),"verification_code":code,"phone_number":phone_number,"country_code":country_code}
     response    = requests.get(url, data=data)
     response.headers['content-type']
     response.encoding
