@@ -50,6 +50,8 @@ def isAdmin(myUserID):
 	return False
 
 def userCheckPS(request, obj=None):
+	if request.method=='DELETE':
+		return False
 	myUserID = request.user.id
 	if isAdmin(myUserID):
 		return True

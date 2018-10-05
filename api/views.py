@@ -16,7 +16,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from core.forms import ChangePasswordForm
-from core.utils import get_site_url
+from core.utils import get_site_url, iHttpResponse
 from api.serializers import UserSerializer, TopicSerializer, VocabularySerializer, FeedbackSerializer
 from api.permissions import IsOwnerOrReadOnly
 from topics.models import Topic, Vocabulary
@@ -40,7 +40,7 @@ class CustomTokenAuthentication(TokenAuthentication):
 		
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset                = User.objects.all()
+    queryset                = User.objects.none()
     serializer_class        = UserSerializer
     permission_classes      = [IsOwnerOrReadOnly]
     authentication_classes  = [CustomTokenAuthentication,
@@ -49,8 +49,11 @@ class UserViewSet(viewsets.ModelViewSet):
     ordering_fields         = '__all__'
 
     def get_queryset(self):
+        if not self.request.auth:
+            return None
         user = self.request.user
-        if user.is_admin:
+        print(user)
+        if user and user.is_admin:
             return User.objects.all()
         return User.objects.filter(pk=user.id)
 
@@ -97,7 +100,7 @@ def verify_email(request, uidb64, token):
     return render(request, 'frontend/email/verify_email_successfully.html', {})
 
 class TopicViewSet(viewsets.ModelViewSet):
-    queryset                = Topic.objects.all()
+    queryset                = Topic.objects.none()
     serializer_class        = TopicSerializer
     permission_classes      = [IsOwnerOrReadOnly]
     authentication_classes  = [CustomTokenAuthentication,
@@ -107,14 +110,16 @@ class TopicViewSet(viewsets.ModelViewSet):
     ordering_fields         = '__all__'
 
     def get_queryset(self):
+        if not self.request.auth:
+            return None
         user = self.request.user
-        if user.is_admin:
+        if user and user.is_admin:
             return Topic.objects.all()
         return Topic.objects.filter(user=user)
 
 
 class VocabularyViewSet(viewsets.ModelViewSet):
-    queryset                = Vocabulary.objects.all()
+    queryset                = Vocabulary.objects.none()
     serializer_class        = VocabularySerializer
     permission_classes      = [IsOwnerOrReadOnly]
     authentication_classes  = [CustomTokenAuthentication,
@@ -124,8 +129,10 @@ class VocabularyViewSet(viewsets.ModelViewSet):
     ordering_fields         = '__all__'
 
     def get_queryset(self):
+        if not self.request.auth:
+            return None
         user = self.request.user
-        if user.is_admin:
+        if user and user.is_admin:
             return Vocabulary.objects.all()
         topics = Topic.objects.filter(user=user)
         return Vocabulary.objects.filter(topic__in=topics)
