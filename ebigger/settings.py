@@ -68,6 +68,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 #     'itbigger.ga'
 # )
 
+LOGIN_URL = 'rest_framework:login'
+LOGOUT_URL = 'rest_framework:logout'
 # Application definition
 
 INSTALLED_APPS = [
