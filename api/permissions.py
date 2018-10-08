@@ -44,7 +44,7 @@ def check(request, view, obj=None):
 	return False
 
 def isAdmin(myUserID):
-	user = User.objects.get(pk=myUserID)
+	user = User.objects.filter(pk=myUserID).first()
 	if user:
 		return user.is_admin
 	return False
