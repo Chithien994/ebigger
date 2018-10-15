@@ -20,12 +20,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
-#facebook app
-# : Your facebook app id
-FACEBOOK_APP_ID = '109163919789581'
-# : Your facebook app secret
-FACEBOOK_APP_SECRET = '7c64fb3bf15ad798738d021aea60d6e6'
-#end facebook app
+#facebook
+SOCIAL_AUTH_FACEBOOK_KEY = '109163919789581'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET ='7c64fb3bf15ad798738d021aea60d6e6' #app key
 
 # Name of the directory for the project.
 PROJECT_DIRNAME = PROJECT_ROOT.split(os.sep)[-1]
@@ -85,6 +82,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_swagger',
     'corsheaders',
+    'social_django',  # facebook
     'core',
     'topics',
     'customers',
@@ -103,6 +101,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.common.BrokenLinkEmailsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',  # facebook
 ]
 
 ROOT_URLCONF = 'ebigger.urls'
@@ -118,6 +117,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',  # facebook
+                'social_django.context_processors.login_redirect', # facebook
             ],
         },
     },
@@ -126,6 +127,14 @@ TEMPLATES = [
 AUTOLOAD_TEMPLATETAGS = [
     'core.templatetags.custom_templatetags',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',# facebook
+    'social_core.backends.twitter.TwitterOAuth',# facebook
+    'social_core.backends.facebook.FacebookOAuth2',# facebook
+
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 WSGI_APPLICATION = 'ebigger.wsgi.application'
 
@@ -264,3 +273,7 @@ CLIENT_SECRET = os.path.join(BASE_DIR, 'client_secret.json')
 TWILIO_ACCOUNT_SID = 'ACfd3413596ee0366617b0629f772bdeca'
 TWILIO_AUTH_TOKEN = '341f8453d9df503b6a5334f7a2f074b1'
 TWILIO_FROM_NUMBER = '+18647321566'
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'home'

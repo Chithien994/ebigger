@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 from rest_framework_swagger.views import get_swagger_view
 
 from api.views import reset_password, verify_email, oauth2callback
-from appview.views import home
+from appview import views as app_view
 
 schema_view = get_swagger_view(title='EnglishBigger API')
 
@@ -33,7 +33,9 @@ urlpatterns = [
     path('docs/', schema_view),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('message/', include('sms.urls')),
-    url(r'^$', home, name='home'),
+    url(r'^$', app_view.home, name='home'),
+    url(r'^settings/$', app_view.settings, name='settings'),
+    url(r'^oauth/', include('social_django.urls', namespace='social')),  # facebook
     url(r'^reset_password/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
                 reset_password, name='resetpassword'),
     url(r'^verifyemail/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
