@@ -79,7 +79,7 @@ class BiggerUserManager(BaseUserManager):
         user.save(using =self._db)
         return user
 
-    def create_superuser(self, email, first_name, last_name, phone_number, password):
+    def create_superuser(self, email, first_name, last_name, country_code, phone_number, password):
         """
         Creates and saves a superuser with the given email, phone_number and password.
         """
@@ -94,7 +94,7 @@ class BiggerUserManager(BaseUserManager):
         user.save(using =self._db)
         from verification.models import EmailManager, PhoneManager
         emailManager = EmailManager.objects.create(user=user,email=email,verified=True)
-        phoneManager = PhoneManager.objects.create(user=user,phone_number=phone_number,verified=True)
+        phoneManager = PhoneManager.objects.create(user=user,country_code=country_code,phone_number=phone_number,verified=True)
         return user
 
     def create_user_with_facebok(selfs, email, first_name, last_name, birthday, gender, address, facebook_id, facebook_token):

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.db.models import Q
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
@@ -51,8 +52,19 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         try:
             user = self.request.user
+            search = self.request.GET.get('search','')
+            user_search = 0
+            if search.isdigit():
+                user_search = int(search)
+            qSearch = (
+                Q(first_name__icontains=search) |
+                Q(last_name__icontains=search) |
+                Q(email__icontains=search) | 
+                Q(phone_number__icontains=search) | 
+                Q(id=user_search))
+
             if user.is_admin:
-                return User.objects.all()
+                return User.objects.filter(qSearch)
             return User.objects.filter(pk=user.id)
         except Exception as e:
             print(e)
@@ -114,9 +126,15 @@ class TopicViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         try:
             user = self.request.user
+            search = self.request.GET.get('search','')
+            user_search = 0
+            if search.isdigit():
+                user_search = int(search)
+            qSearch = (Q(name__icontains=search) | Q(user_id=user_search))
+
             if user.is_admin:
-                return Topic.objects.all()
-            return Topic.objects.filter(user=user)
+                return Topic.objects.filter(qSearch)
+            return Topic.objects.filter(Q(user=user), qSearch)
         except Exception as e:
             print(e)
         return Topic.objects.none()
@@ -135,10 +153,16 @@ class VocabularyViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         try:
             user = self.request.user
+            search = self.request.GET.get('search','')
+            topic_search = 0
+            if search.isdigit():
+                topic_search = int(search)
+            qSearch = (Q(note_source__icontains=search) | Q(note_meaning__icontains=search) | Q(topic_id=topic_search))
+
             if user and user.is_admin:
-                return Vocabulary.objects.all()
+                return Vocabulary.objects.filter(qSearch)
             topics = Topic.objects.filter(user=user)
-            return Vocabulary.objects.filter(topic__in=topics)
+            return Vocabulary.objects.filter(Q(topic__in=topics), qSearch)
         except Exception as e:
             print(e)
         return Vocabulary.objects.none()

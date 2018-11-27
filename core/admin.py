@@ -83,7 +83,7 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = ()
     try:
         if BiggerUser.objects.count()==0:
-            BiggerUser.objects.create_superuser('chithien994@gmail.com','Chi Thien', 'TCN', '0866505510', 'admin')
+            BiggerUser.objects.create_superuser('chithien994@gmail.com','Chi Thien', 'TCN', '84', '0866505510', 'admin')
             print('Initialize admin account successfully!')
     except Exception as e:
         print(str(e))
