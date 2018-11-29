@@ -69,8 +69,6 @@ class UserViewSet(viewsets.ModelViewSet):
         except Exception as e:
             print(e)
         return User.objects.none()
-        
-
 
 def reset_password(request, uidb64, token):
     user_id = urlsafe_base64_decode(uidb64)
@@ -100,7 +98,6 @@ def reset_password(request, uidb64, token):
 def verify_email(request, uidb64, token):
     user_id = urlsafe_base64_decode(uidb64)
     user    = User.objects.get(pk=user_id)
-    msg     = ''
     if not user:
         return render(request, 'frontend/email/verify_email_invalid.html', {})
     math = default_token_generator.check_token(user, token)

@@ -125,7 +125,7 @@ def login(request):
 	Login
     With body: 
     {
-        "phone_number":"string",
+        "username":"string",
         "password":"string"
     }
 	"""
