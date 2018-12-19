@@ -175,6 +175,11 @@ class BiggerUser(DateTimeModel, AbstractBaseUser):
         return True
 
     @property
+    def full_name(self):
+        "Returns the person's full name."
+        return '%s %s' % (self.first_name, self.last_name)
+
+    @property
     def is_staff(self):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff

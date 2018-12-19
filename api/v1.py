@@ -64,7 +64,7 @@ def resend_verification_message(request):
     phone_number    = request.data.get('phone_number')
     phoneManager    = PhoneManager.objects.filter(phone_number=phone_number, verified=False).first()
     if phoneManager and phoneManager.send_verification():
-        return iHttpResponse(200,'Please check the message, activation code has been sent to your phone number.')
+        return iHttpResponse(200,'Verification code has been sent to your phone number.')
     return iHttpResponse(400,'Error sending verification message!')
 
 @api_view(['POST'])
@@ -165,7 +165,7 @@ def authfacebook(request):
     # data = json.loads(request.body.decode('utf-8'))
     access_token 	= request.data.get('access_token')
     facebook_id 	= ''
-    email 			= '';
+    email 			= ''
     try:
     	graph = facebook.GraphAPI(access_token=access_token)
     	user_info = graph.get_object(
