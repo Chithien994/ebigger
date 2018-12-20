@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.email
     class Meta:
         model = User
-        exclude = ('password', 'last_login', 'created', 'modified', 'is_active', 'is_admin')
+        exclude = ('password', 'last_login', 'created', 'modified', 'is_active')
 
     def to_internal_value(self, data):
         first_name = data.get('first_name')
@@ -64,7 +64,7 @@ class NewUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model   = User
-        exclude = ('password', 'is_active', 'last_login','created', 'modified', 'is_admin')
+        exclude = ('password', 'is_active', 'last_login','created', 'modified')
             
 class TopicSerializer(serializers.ModelSerializer):
     class Meta:
